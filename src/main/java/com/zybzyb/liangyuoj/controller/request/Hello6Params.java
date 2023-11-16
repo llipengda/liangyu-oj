@@ -1,6 +1,7 @@
 package com.zybzyb.liangyuoj.controller.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -12,6 +13,7 @@ public class Hello6Params {
     /**
      * 名字
      */
+    @NotNull
     private String name;
 
     /**
