@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.zybzyb</groupId>
     <artifactId>liangyu-oj</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>liangyu-oj</name>
     <description>liangyu-oj</description>
     <properties>
@@ -60,6 +60,12 @@
             <groupId>com.github.therapi</groupId>
             <artifactId>therapi-runtime-javadoc</artifactId>
             <version>0.15.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>2.0.42</version>
         </dependency>
     </dependencies>
 
