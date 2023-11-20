@@ -16,17 +16,18 @@ public enum CommonErrorCode {
     UNKNOWN_ERROR(400, "未知错误"),
     INTERNAL_SERVER_ERROR(500, "服务器内部错误"),
     PARAMETER_ERROR(4001, "参数错误"),
+    EMAIL_ALREADY_EXIST(4002, "邮箱已存在"),
     ;
 
     /**
      * 错误码
      */
-    private final Integer errorCode;
+    private final Integer code;
 
     /**
      * 错误信息
      */
-    private final String errorMessage;
+    private final String msg;
 
     /**
      * 转换为 Map
@@ -34,8 +35,8 @@ public enum CommonErrorCode {
      */
     public Map<String, Object> toMap() {
         Map<String, Object> res = new HashMap<>();
-        res.put("errorCode", this.errorCode);
-        res.put("errorMessage", this.errorMessage);
+        res.put("code", this.code);
+        res.put("msg", this.msg);
         return res;
     }
 }
