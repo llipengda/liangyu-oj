@@ -1,12 +1,10 @@
 package com.zybzyb.liangyuoj.controller;
 
-import com.zybzyb.liangyuoj.common.CommonErrorCode;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

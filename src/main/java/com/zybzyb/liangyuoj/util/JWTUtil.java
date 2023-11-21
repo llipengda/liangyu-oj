@@ -45,7 +45,7 @@ public class JWTUtil {
                     .parseClaimsJws(jwt)
                     .getBody();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
         return claims;
     }

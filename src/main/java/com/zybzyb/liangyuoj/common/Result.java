@@ -1,9 +1,7 @@
 package com.zybzyb.liangyuoj.common;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 通用返回结果
