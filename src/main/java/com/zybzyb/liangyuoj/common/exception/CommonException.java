@@ -23,11 +23,11 @@ public class CommonException extends RuntimeException {
 
     public CommonException(CommonErrorCode commonErrorCode) {
         this.commonErrorCode = commonErrorCode;
-        this.errorMessage = commonErrorCode.getErrorMessage();
+        this.errorMessage = commonErrorCode.getMsg();
     }
 
     public CommonException() {
         this.commonErrorCode = CommonErrorCode.UNKNOWN_ERROR;
-        this.errorMessage = CommonErrorCode.UNKNOWN_ERROR.getErrorMessage();
+        this.errorMessage = CommonErrorCode.UNKNOWN_ERROR.getMsg();
     }
 }

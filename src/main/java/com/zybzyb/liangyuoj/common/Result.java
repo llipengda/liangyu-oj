@@ -1,7 +1,9 @@
 package com.zybzyb.liangyuoj.common;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 通用返回结果
@@ -9,6 +11,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Result<T> {
+
     /**
      * 代码
      */
@@ -32,7 +35,7 @@ public class Result<T> {
      * @return Result
      */
     public static <T> Result<T> success(T data) {
-        return new Result<>(CommonErrorCode.SUCCESS.getErrorCode(), data, "操作成功");
+        return new Result<>(CommonErrorCode.SUCCESS.getCode(), data, "操作成功");
     }
 
     /**
@@ -43,7 +46,7 @@ public class Result<T> {
      * @return Result
      */
     public static <T> Result<T> fail(CommonErrorCode errorCode) {
-        return new Result<>(errorCode.getErrorCode(), null, errorCode.getErrorMessage());
+        return new Result<>(errorCode.getCode(), null, errorCode.getMsg());
     }
 
     /**
@@ -56,7 +59,7 @@ public class Result<T> {
      * @return Result
      */
     public static <T> Result<T> fail(CommonErrorCode errorCode, T data, String msg) {
-        return new Result<>(errorCode.getErrorCode(), data, msg);
+        return new Result<>(errorCode.getCode(), data, msg);
     }
 
     /**
@@ -68,7 +71,7 @@ public class Result<T> {
      * @return Result
      */
     public static <T> Result<T> fail(CommonErrorCode errorCode, T data) {
-        return new Result<>(errorCode.getErrorCode(), data, errorCode.getErrorMessage());
+        return new Result<>(errorCode.getCode(), data, errorCode.getMsg());
     }
 
     /**
@@ -79,6 +82,6 @@ public class Result<T> {
      * @return Result
      */
     public static <T> Result<T> fail(String msg) {
-        return new Result<>(CommonErrorCode.UNKNOWN_ERROR.getErrorCode(), null, msg);
+        return new Result<>(CommonErrorCode.UNKNOWN_ERROR.getCode(), null, msg);
     }
 }
