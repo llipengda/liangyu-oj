@@ -6,9 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class User implements Serializable {
     /**
      * 用户 ID
      */
-    @Id
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

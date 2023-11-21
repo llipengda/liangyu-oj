@@ -1,7 +1,7 @@
 package com.zybzyb.liangyuoj.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zybzyb.liangyuoj.entity.User;
-import com.zybzyb.liangyuoj.mapper.base.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

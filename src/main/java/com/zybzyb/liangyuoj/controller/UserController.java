@@ -36,9 +36,9 @@ public class UserController {
     @PostMapping(value = "/signUp", produces = "application/json")
     public Result<Void> webSignUp(@NotNull @RequestParam("email") String email, @NotNull @RequestParam("password") String password, @NotNull @RequestParam("type") Integer type){
         try {
-            if(userMapper.selectCount(User.builder().email(email).build()) != 0){
-                return Result.fail(CommonErrorCode.EMAIL_ALREADY_EXIST);
-            }
+            // if(userMapper.selectCount(User.builder().email(email).build()) != 0){
+            //     return Result.fail(CommonErrorCode.EMAIL_ALREADY_EXIST);
+            // }
             User user = User.builder()
                     .createTime(new Date())
                     .email(email)
