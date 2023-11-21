@@ -6,6 +6,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author yannis
@@ -18,8 +19,8 @@ public class AssertUtil {
 
     public static void isTrue(boolean expValue, CommonErrorCode resultCode, Object obj) {
         if (!expValue) {
-            if(obj instanceof String){
-                throw new CommonException(resultCode,obj.toString());
+            if (obj instanceof String) {
+                throw new CommonException(resultCode, obj.toString());
             }
         }
     }
@@ -39,11 +40,11 @@ public class AssertUtil {
     }
 
     public static void equals(Object obj1, Object obj2, CommonErrorCode resultCode, Object obj) {
-        isTrue(obj1 == null ? obj2 == null : obj1.equals(obj2), resultCode, obj);
+        isTrue(Objects.equals(obj1, obj2), resultCode, obj);
     }
 
     public static void notEquals(Object obj1, Object obj2, CommonErrorCode resultCode, Object obj) {
-        isTrue(obj1 == null ? obj2 != null : !obj1.equals(obj2), resultCode, obj);
+        isTrue(!Objects.equals(obj1, obj2), resultCode, obj);
     }
 
     public static void contains(Object base, Collection<?> collection, CommonErrorCode resultCode, Object obj) {
@@ -59,30 +60,20 @@ public class AssertUtil {
     public static void in(Object base, Object[] collection, CommonErrorCode resultCode, Object obj) {
         notNull(collection, resultCode, obj);
         boolean hasEqual = false;
-        Object[] var5 = collection;
-        int var6 = collection.length;
-
-        for(int var7 = 0; var7 < var6; ++var7) {
-            Object obj2 = var5[var7];
+        for (Object obj2 : collection) {
             if (base == obj2) {
                 hasEqual = true;
                 break;
             }
         }
-
         isTrue(hasEqual, resultCode, obj);
     }
 
     public static void notIn(Object base, Object[] collection, CommonErrorCode resultCode, Object obj) {
         if (null != collection) {
-            Object[] var4 = collection;
-            int var5 = collection.length;
-
-            for(int var6 = 0; var6 < var5; ++var6) {
-                Object obj2 = var4[var6];
+            for (Object obj2 : collection) {
                 isTrue(base != obj2, resultCode, obj);
             }
-
         }
     }
 
@@ -110,39 +101,27 @@ public class AssertUtil {
         isTrue(object == null, resultCode, null);
     }
 
-    public static void notEmpty(Collection collection, CommonErrorCode resultCode, Object obj) {
+    public static void notEmpty(Collection<?> collection, CommonErrorCode resultCode, Object obj) {
         isTrue(!CollectionUtils.isEmpty(collection), resultCode, obj);
     }
 
-    public static void notEmpty(Collection collection, CommonErrorCode resultCode) {
+    public static void notEmpty(Collection<?> collection, CommonErrorCode resultCode) {
         isTrue(!CollectionUtils.isEmpty(collection), resultCode);
     }
 
-    public static void empty(Collection collection, CommonErrorCode resultCode, Object obj) {
+    public static void empty(Collection<?> collection, CommonErrorCode resultCode, Object obj) {
         isTrue(CollectionUtils.isEmpty(collection), resultCode, obj);
     }
 
-    public static void notEmpty(Map map, CommonErrorCode resultCode, Object obj) {
+    public static void notEmpty(Map<?, ?> map, CommonErrorCode resultCode, Object obj) {
         isTrue(!CollectionUtils.isEmpty(map), resultCode, obj);
     }
 
-    public static void empty(Map map, CommonErrorCode resultCode, Object obj) {
+    public static void empty(Map<?, ?> map, CommonErrorCode resultCode, Object obj) {
         isTrue(CollectionUtils.isEmpty(map), resultCode, obj);
     }
 
     private static boolean isBlank(String str) {
-        int strLen;
-        if(str != null && (strLen = str.length()) != 0) {
-            for(int i=0; i<strLen; ++i) {
-                if(!Character.isWhitespace(str.charAt(i))) {
-                    return false;
-                }
-            }
-
-            return true;
-        } else {
-            return true;
-        }
+        return str == null || str.trim().isEmpty();
     }
-
 }

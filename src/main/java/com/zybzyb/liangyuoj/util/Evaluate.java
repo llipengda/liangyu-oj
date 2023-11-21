@@ -75,7 +75,7 @@ public class Evaluate {
             }
         } catch (IOException | InterruptedException e) {
             // 这里先全都printStackTrace了
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }finally {
             // 删除跑完之后的文件
             if(new File(javaFileName).exists()){
