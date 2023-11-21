@@ -17,6 +17,7 @@ public enum CommonErrorCode {
     INTERNAL_SERVER_ERROR(500, "服务器内部错误"),
     PARAMETER_ERROR(4001, "参数错误"),
     EMAIL_ALREADY_EXIST(4002, "邮箱已存在"),
+    TOKEN_ERROR(4003, "token 校验失败,"),
     ;
 
     /**

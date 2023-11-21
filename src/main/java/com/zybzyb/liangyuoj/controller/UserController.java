@@ -30,15 +30,36 @@ public class UserController {
      * 用户注册
      * @param email 邮箱
      * @param password 密码
-     * @param type 用户类型，0为管理员，1为老师，2为学生
      * @return 注册结果
      */
     @PostMapping(value = "/signUp", produces = "application/json")
-    public Result<Void> webSignUp(@NotNull @RequestParam("email") String email, @NotNull @RequestParam("password") String password, @NotNull @RequestParam("type") Integer type){
+    public Result<Void> signUp(@NotNull @RequestParam("email") String email, @NotNull @RequestParam("password") String password){
         try {
-            // if(userMapper.selectCount(User.builder().email(email).build()) != 0){
-            //     return Result.fail(CommonErrorCode.EMAIL_ALREADY_EXIST);
-            // }
+
+            User user = User.builder()
+                    .createTime(new Date())
+                    .email(email)
+                    .password(password)
+                    .nickname("用户" + email.replaceAll("@.*", ""))
+                    .build();
+
+            return Result.success(null);
+
+        } catch (CommonException e){
+            return Result.fail(e.getCommonErrorCode());
+        }
+    }
+
+    /**
+     * 用户登录
+     * @param email 邮箱
+     * @param password 密码
+     * @return 登录结果
+     */
+    @PostMapping(value = "/login", produces = "application/json")
+    public Result<Void> login(@NotNull @RequestParam("email") String email, @NotNull @RequestParam("password") String password){
+        try {
+
             User user = User.builder()
                     .createTime(new Date())
                     .email(email)
