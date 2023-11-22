@@ -8,10 +8,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * @author yannis
- * @version 2020/7/23 0:51
- */
 public class AssertUtil {
 
     public AssertUtil() {

@@ -26,11 +26,6 @@ public class User implements Serializable {
     private Long id;
 
     /**
-     * 用户名
-     */
-    private String username;
-
-    /**
      * 密码
      */
     private String password;
@@ -44,6 +39,11 @@ public class User implements Serializable {
      * 昵称
      */
     private String nickname;
+
+    /**
+     * 真实名字
+     */
+    private String name;
 
     /**
      * 头像

@@ -18,6 +18,7 @@ public enum CommonErrorCode {
     PARAMETER_ERROR(4001, "参数错误"),
     EMAIL_ALREADY_EXIST(4002, "邮箱已存在"),
     TOKEN_ERROR(4003, "token 校验失败,"),
+    DATA_ERROR(4004, "邮箱或密码错误"),
     ;
 
     /**
