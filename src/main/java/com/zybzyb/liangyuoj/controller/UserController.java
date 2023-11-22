@@ -28,9 +28,6 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private PasswordUtil passwordUtil;
-
     /**
      * 用户注册
      * 
@@ -50,7 +47,7 @@ public class UserController {
                     .createTime(new Date())
                     .email(signUpRequest.getEmail())
                     .type(2)
-                    .password(passwordUtil.convert(signUpRequest.getPassword()))
+                    .password(PasswordUtil.hashPassword(signUpRequest.getPassword()))
                     .nickname("用户" + signUpRequest.getEmail().replaceAll("@.*", ""))
                     .build();
 
@@ -89,10 +86,9 @@ public class UserController {
             userQueryWrapper.eq("email", email);
 
             User user = userMapper.selectOne(userQueryWrapper);
-            if (!passwordUtil.convert(password).equals(user.getPassword())) {
+            if (!PasswordUtil.checkPassword(password, user.getPassword())) {
                 return Result.fail(CommonErrorCode.DATA_ERROR);
             }
-
             return Result.success(
                     LoginResponse.builder()
                             .userId(user.getId())
