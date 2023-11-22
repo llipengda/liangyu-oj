@@ -10,42 +10,42 @@ import static org.junit.jupiter.api.Assertions.*;
 class EvaluateUtilTest {
 
     @Test
-    void testExecute_CorrectOutput() {
+    void correctOutput() {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello, World!\"); } }";
         String expectedOutput = "Hello, World!\n";
         var res = EvaluateUtil.execute(sourceCode, expectedOutput);
-        assertEquals(res.getStatus(), EvaluateStatus.AC);
+        assertEquals(EvaluateStatus.AC, res.getStatus());
     }
 
     @Test
-    void testExecute_WrongOutput() {
+    void wrongOutput() {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello\"); } }";
         String expectedOutput = "Hello, World!\n";
         var res = EvaluateUtil.execute(sourceCode, expectedOutput);
-        assertEquals(res.getStatus(), EvaluateStatus.WA);
+        assertEquals(EvaluateStatus.WA, res.getStatus());
     }
 
     @Test
-    void testExecute_CompilationError() {
+    void compilationError() {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello, World!\") } }";
         String expectedOutput = "Hello, World!\n";
         var res = EvaluateUtil.execute(sourceCode, expectedOutput);
-        assertEquals(res.getStatus(), EvaluateStatus.CE);
+        assertEquals(EvaluateStatus.CE, res.getStatus());
     }
 
     @Test
-    void testExecute_TimeLimitExceeded() {
+    void timeLimitExceeded() {
         String sourceCode = "public class Solution { public static void main(String[] args) { while (true); } }";
         String expectedOutput = "Hello, World!\n";
         var res = EvaluateUtil.execute(sourceCode, expectedOutput);
-        assertEquals(res.getStatus(), EvaluateStatus.TLE);
+        assertEquals(EvaluateStatus.TLE, res.getStatus());
     }
 
     @Test
-    void testExecute_RuntimeError() {
+    void runtimeError() {
         String sourceCode = "public class Solution { public static void main(String[] args) { int x = 5 / 0; } }";
         String expectedOutput = "Hello, World!\n";
         var res = EvaluateUtil.execute(sourceCode, expectedOutput);
-        assertEquals(res.getStatus(), EvaluateStatus.RE);
+        assertEquals(EvaluateStatus.RE, res.getStatus());
     }
 }
