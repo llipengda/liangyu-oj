@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @author pdli
+ */
 public class AssertUtil {
 
     public AssertUtil() {
