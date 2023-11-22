@@ -1,10 +1,12 @@
 package com.zybzyb.liangyuoj.controller.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Schema(description = "更新用户请求")
 public class UpdateUserRequest {
     /**
      * 昵称
