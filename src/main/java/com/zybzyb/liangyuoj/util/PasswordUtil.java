@@ -39,10 +39,10 @@ public class PasswordUtil {
             "4esz"
     };
 
-    public String convert(String origin){
+    public String convert(String origin) {
         return SecureUtil
                 .md5(origin)
-                .substring(3,13);
+                .substring(3, 13);
     }
 
     public static void main(String[] args) {
@@ -68,7 +68,7 @@ public class PasswordUtil {
             }
         }
 
-        if (num_count >= 1){
+        if (num_count >= 1) {
             flag = true;
         }
         return flag;
@@ -136,7 +136,7 @@ public class PasswordUtil {
             }
         }
 
-        if (special_count >= 1){
+        if (special_count >= 1) {
             flag = true;
         }
         return flag;
@@ -144,26 +144,24 @@ public class PasswordUtil {
 
     public static boolean checkLateralKeyboardSite(String password) {
         String t_password = password;
-        //将所有输入字符转为小写
+        // 将所有输入字符转为小写
         t_password = t_password.toLowerCase();
         int n = t_password.length();
-        boolean flag = false;
-        int arrLen = KEYBOARD_HORIZONTAL_ARR.length;
-        int limit_num = 3 ;
+        int limit_num = 3;
 
-        for(int i=0; i+limit_num<=n; i++) {
-            String distinguishStr = password.substring(i, i+limit_num);
+        for (int i = 0; i + limit_num <= n; i++) {
+            String distinguishStr = password.substring(i, i + limit_num);
 
             for (String PwdSecurityConfigStr : KEYBOARD_HORIZONTAL_ARR) {
                 String revOrderStr = new StringBuffer(PwdSecurityConfigStr).reverse().toString();
 
-                //检测包含字母(区分大小写)
-                //考虑 大写键盘匹配的情况
+                // 检测包含字母(区分大小写)
+                // 考虑 大写键盘匹配的情况
                 String UpperStr = PwdSecurityConfigStr.toUpperCase();
                 if ((PwdSecurityConfigStr.contains(distinguishStr)) || (UpperStr.contains(distinguishStr))) {
                     return true;
                 }
-                //考虑逆序输入情况下 连续输入
+                // 考虑逆序输入情况下 连续输入
                 String revUpperStr = new StringBuffer(UpperStr).reverse().toString();
                 if ((revOrderStr.contains(distinguishStr)) || (revUpperStr.contains(distinguishStr))) {
                     return true;
@@ -179,17 +177,17 @@ public class PasswordUtil {
         int n = t_password.length();
         int limit_num = 3;
 
-        for(int i=0; i+limit_num<=n; i++) {
-            String distinguishStr = password.substring(i, i+limit_num);
+        for (int i = 0; i + limit_num <= n; i++) {
+            String distinguishStr = password.substring(i, i + limit_num);
             for (String PwdSecurityConfigStr : KEYBOARD_SLOPE_ARR) {
                 String revOrderStr = new StringBuffer(PwdSecurityConfigStr).reverse().toString();
-                //检测包含字母(区分大小写)
-                //考虑 大写键盘匹配的情况
+                // 检测包含字母(区分大小写)
+                // 考虑 大写键盘匹配的情况
                 String UpperStr = PwdSecurityConfigStr.toUpperCase();
                 if ((PwdSecurityConfigStr.contains(distinguishStr)) || (UpperStr.contains(distinguishStr))) {
                     return true;
                 }
-                //考虑逆序输入情况下 连续输入
+                // 考虑逆序输入情况下 连续输入
                 String revUpperStr = new StringBuffer(UpperStr).reverse().toString();
                 if ((revOrderStr.contains(distinguishStr)) || (revUpperStr.contains(distinguishStr))) {
                     return true;
@@ -206,26 +204,26 @@ public class PasswordUtil {
         int normal_count;
         int reversed_count;
 
-        //检测包含字母(区分大小写)
+        // 检测包含字母(区分大小写)
         t_password = t_password.toLowerCase();
 
         int n = t_password.length();
         char[] pwdCharArr = t_password.toCharArray();
 
-        for (int i=0; i+limit_num<=n; i++) {
+        for (int i = 0; i + limit_num <= n; i++) {
             normal_count = 0;
             reversed_count = 0;
-            for (int j=0; j<limit_num-1; j++) {
-                if (pwdCharArr[i+j+1]-pwdCharArr[i+j]==1) {
+            for (int j = 0; j < limit_num - 1; j++) {
+                if (pwdCharArr[i + j + 1] - pwdCharArr[i + j] == 1) {
                     normal_count++;
-                    if(normal_count == limit_num -1){
+                    if (normal_count == limit_num - 1) {
                         return true;
                     }
                 }
 
-                if (pwdCharArr[i+j]-pwdCharArr[i+j+1]==1) {
+                if (pwdCharArr[i + j] - pwdCharArr[i + j + 1] == 1) {
                     reversed_count++;
-                    if(reversed_count == limit_num -1){
+                    if (reversed_count == limit_num - 1) {
                         return true;
                     }
                 }
@@ -234,19 +232,18 @@ public class PasswordUtil {
         return flag;
     }
 
-
     public static boolean checkSequentialSameChars(String password) {
         int n = password.length();
         char[] pwdCharArr = password.toCharArray();
         boolean flag = false;
         int limit_num = 3;
         int count;
-        for (int i=0; i+limit_num<=n; i++) {
-            count=0;
-            for (int j=0; j<limit_num-1; j++) {
-                if(pwdCharArr[i+j] == pwdCharArr[i+j+1]) {
+        for (int i = 0; i + limit_num <= n; i++) {
+            count = 0;
+            for (int j = 0; j < limit_num - 1; j++) {
+                if (pwdCharArr[i + j] == pwdCharArr[i + j + 1]) {
                     count++;
-                    if (count == limit_num -1){
+                    if (count == limit_num - 1) {
                         return true;
                     }
                 }
@@ -262,20 +259,25 @@ public class PasswordUtil {
         boolean flag;
 
         flag = checkPasswordLength(password);
-        if (!flag)  return false;
+        if (!flag)
+            return false;
         int i = 0;
         flag = checkContainDigit(password);
-        if (flag) i++;
+        if (flag)
+            i++;
 
         flag = checkContainLowerCase(password);
-        if (flag)  i++;
+        if (flag)
+            i++;
 
-        //检测包含大写字母
+        // 检测包含大写字母
         flag = checkContainUpperCase(password);
-        if (flag) i++;
+        if (flag)
+            i++;
 
         flag = checkContainSpecialChar(password);
-        if (flag) i++;
+        if (flag)
+            i++;
         return i >= 3;
 
     }

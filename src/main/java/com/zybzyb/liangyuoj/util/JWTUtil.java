@@ -15,12 +15,12 @@ public class JWTUtil {
     /**
      * 创建jwt
      */
-    public static String createJwtToken(User user){
+    public static String createJwtToken(User user) {
         Map<String, Object> map = new HashMap<>();
         map.put("alg", "HS256");
         map.put("typ", "JWT");
 
-        Map<String,Object> payload = new HashMap<>();
+        Map<String, Object> payload = new HashMap<>();
         payload.put("user", JSONObject.toJSONString(user));
 
         return Jwts.builder()
@@ -61,6 +61,3 @@ public class JWTUtil {
         System.out.println(user);
     }
 }
-
-
-

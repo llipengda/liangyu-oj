@@ -1,12 +1,12 @@
 package com.zybzyb.liangyuoj.controller.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Schema(description = "登录请求")
 public class LoginRequest {
 
     /**
@@ -20,4 +20,3 @@ public class LoginRequest {
     private String password;
 
 }
-
