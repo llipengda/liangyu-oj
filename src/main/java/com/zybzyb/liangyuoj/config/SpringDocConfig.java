@@ -3,9 +3,7 @@ package com.zybzyb.liangyuoj.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -18,9 +16,8 @@ import org.springframework.context.annotation.Configuration;
 public class SpringDocConfig {
 
     @Bean
-    public OpenAPI defaultOpenAPI() {
-        return new OpenAPI().
-                info(info())
+    OpenAPI defaultOpenAPI() {
+        return new OpenAPI().info(info())
                 .externalDocs(documentation());
     }
 
@@ -36,7 +33,7 @@ public class SpringDocConfig {
     }
 
     @Bean
-    public GroupedOpenApi userApi() {
+    GroupedOpenApi userApi() {
         return GroupedOpenApi.builder()
                 .displayName("接口")
                 .group("user")
@@ -47,11 +44,9 @@ public class SpringDocConfig {
     }
 
     public OpenApiCustomizer openApiCustomizer() {
-        return api ->
-                api.components(new Components()
-                        .addSecuritySchemes("Authorization", new SecurityScheme().name("认证").type(SecurityScheme.Type.HTTP)
-                                .description("JWT认证").scheme("bearer").bearerFormat("JWT"))
-                );
+        return api -> api.components(new Components()
+                .addSecuritySchemes("Authorization", new SecurityScheme().name("认证").type(SecurityScheme.Type.HTTP)
+                        .description("JWT认证").scheme("bearer").bearerFormat("JWT")));
     }
 
     public OperationCustomizer operationCustomizer() {

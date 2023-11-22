@@ -1,4 +1,5 @@
 package com.zybzyb.liangyuoj.util;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.concurrent.*;
@@ -6,21 +7,21 @@ import java.util.concurrent.*;
 /**
  * @author xw
  * @version 2023/11/19
- * zyb可以看看这个，也可以直接把这个完善一下
- * 输入的代码应该是由别的地方传过来，然后要把运行结果返回给别的地方
- * 测试用例的输入也应该由别的地方传入
- * 也就是说，别的地方调用这里的一个方法，传入代码和测试用例的输入，然后这里需要返回运行的结果
- * 还没做的：还没对测试用例输入进行处理，也没统计运行时间，还有异常处理
- * 还要考虑输入的代码类名的问题，这里写死了
+ *          zyb可以看看这个，也可以直接把这个完善一下
+ *          输入的代码应该是由别的地方传过来，然后要把运行结果返回给别的地方
+ *          测试用例的输入也应该由别的地方传入
+ *          也就是说，别的地方调用这里的一个方法，传入代码和测试用例的输入，然后这里需要返回运行的结果
+ *          还没做的：还没对测试用例输入进行处理，也没统计运行时间，还有异常处理
+ *          还要考虑输入的代码类名的问题，这里写死了
  */
 public class Evaluate {
 
-    public static void execute(String sourceCode,String expectedOutput){
+    public static void execute(String sourceCode, String expectedOutput) {
         String workDir = ".\\tests\\";
-        if(!new File(workDir).exists()){
-            if(new File(workDir).mkdirs()){
+        if (!new File(workDir).exists()) {
+            if (new File(workDir).mkdirs()) {
                 System.out.println("create work directory success");
-            }else {
+            } else {
                 System.out.println("create work directory failed");
             }
         }
@@ -67,34 +68,34 @@ public class Evaluate {
                 } else {
                     System.out.println("Wrong Answer.");
                 }
-            } else if(!finished){
+            } else if (!finished) {
                 System.out.println("Time Limit Exceeded.");
-            }else {
+            } else {
                 System.out.println("Runtime Error.");
                 System.out.println("Program Output: \n" + new String(run.getErrorStream().readAllBytes()));
             }
         } catch (IOException | InterruptedException e) {
             // 这里先全都printStackTrace了
             e.printStackTrace(System.err);
-        }finally {
+        } finally {
             // 删除跑完之后的文件
-            if(new File(javaFileName).exists()){
+            if (new File(javaFileName).exists()) {
                 System.out.println("delete .java :" + new File(javaFileName).delete());
             }
-            if(new File(javaFileName.replace(".java","") + ".class").exists()){
-                System.out.println("delete .class :" + new File(javaFileName.replace(".java","") + ".class").delete());
+            if (new File(javaFileName.replace(".java", "") + ".class").exists()) {
+                System.out.println("delete .class :" + new File(javaFileName.replace(".java", "") + ".class").delete());
             }
         }
     }
 
     public static void main(String[] args) {
         String sourceCode = """
-                public class Solution {
-                    public static void main(String[] args) {
-                        System.out.println("Hello World!");
+                    public class Solution {
+                        public static void main(String[] args) {
+                            System.out.println("Hello World!");
+                        }
                     }
-                }
-            """;
-        execute(sourceCode,"Hello World!");
+                """;
+        execute(sourceCode, "Hello World!");
     }
 }

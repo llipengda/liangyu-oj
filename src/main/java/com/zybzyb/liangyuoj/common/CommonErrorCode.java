@@ -33,6 +33,7 @@ public enum CommonErrorCode {
 
     /**
      * 转换为 Map
+     * 
      * @return Map
      */
     public Map<String, Object> toMap() {
