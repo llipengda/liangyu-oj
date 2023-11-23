@@ -20,8 +20,14 @@ public class EvaluateResult {
      */
     private String message;
 
+    /**
+     * 所用时间
+     */
+    private Double time;
+
     public EvaluateResult() {
         this.status = EvaluateStatus.AC;
         this.message = "测试通过";
+        this.time = 0.0;
     }
 }

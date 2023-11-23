@@ -10,15 +10,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+/**
+ * 拦截器
+ * @author xw, pdli
+ * @version 2023/11/23
+ * @see com.zybzyb.liangyuoj.annotation.NoAuth
+ * @see com.zybzyb.liangyuoj.annotation.Role
+ */
 public class Interceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        if (!(handler instanceof HandlerMethod)) {
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
         if (handlerMethod.getMethodAnnotation(NoAuth.class) != null) {
             return true;
         }
