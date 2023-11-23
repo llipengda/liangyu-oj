@@ -92,7 +92,7 @@ public class Problem implements Serializable {
     /**
      * 提交数
      */
-    private Integer submit;
+    private Integer submitted;
 
     /**
      * 难度

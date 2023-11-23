@@ -50,7 +50,7 @@ public class ProblemController {
     @PostMapping("/add")
     public Result<Integer> addProblem(@RequestBody AddProblemRequest addProblemRequest){
         try{
-            Problem problem = Problem.builder().createTime(new Date()).submit(0).accepted(0).build();
+            Problem problem = Problem.builder().createTime(new Date()).submitted(0).accepted(0).build();
             ReflectUtil.add(problem, addProblemRequest);
             return Result.success(problemMapper.insert(problem));
         }catch (CommonException e){
@@ -163,7 +163,7 @@ public class ProblemController {
             }
             submissionMapper.insert(submission);
 
-            p.setSubmit(p.getSubmit() + 1);
+            p.setSubmitted(p.getSubmitted() + 1);
             user.setSubmitted(user.getSubmitted() + 1);
 
             if(res.getStatus() == EvaluateStatus.AC){
