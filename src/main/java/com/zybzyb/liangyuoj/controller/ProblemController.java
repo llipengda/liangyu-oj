@@ -1,8 +1,11 @@
 package com.zybzyb.liangyuoj.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zybzyb.liangyuoj.common.CommonErrorCode;
+import com.zybzyb.liangyuoj.common.Page;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
 import com.zybzyb.liangyuoj.common.exception.CommonException;
@@ -145,8 +148,11 @@ public class ProblemController {
     public Result<EvaluateResult> tryProblem(@RequestBody TryProblemRequest tryProblemRequest, HttpServletRequest request){
         try{
             Problem p = problemMapper.selectOne(new QueryWrapper<Problem>().eq("id", tryProblemRequest.getProblemId()));
+            System.out.println(1);
             JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
+            System.out.println(2);
             User user = userMapper.selectById(jwtUser.getId());
+            System.out.println(3);
 
             Submission submission = Submission.builder()
                     .problemId(p.getId())
@@ -184,12 +190,17 @@ public class ProblemController {
     /**
      * 获取提交列表
      * @param problemId 题目 ID
+     * @param page 页码
+     * @param pageSize 页大小
      * @return 提交列表
      */
     @GetMapping("/getSubmissionList")
-    public Result<List<Submission>> getSubmissionList(Long problemId){
+    public Result<List<Submission>> getSubmissionList(Long problemId,Integer page,Integer pageSize){
         try{
-            return Result.success(submissionMapper.selectList(new QueryWrapper<Submission>().eq("problem_id", problemId)));
+            PageHelper.startPage(page, pageSize, "submit_time desc");
+            QueryWrapper<Submission> wrapper = new QueryWrapper<>();
+            wrapper.eq("problem_id", problemId);
+            return Result.success(new Page<>(new PageInfo<>(submissionMapper.selectList(wrapper))).getList());
         }catch (CommonException e){
             return Result.fail(e.getCommonErrorCode());
         }catch (Exception e){

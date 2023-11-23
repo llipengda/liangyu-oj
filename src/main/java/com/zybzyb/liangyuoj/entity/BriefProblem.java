@@ -17,14 +17,14 @@ public class BriefProblem {
     private Integer id;
 
     /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
      * 题目标题
      */
     private String title;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
     /**
      * 通过数
@@ -34,7 +34,7 @@ public class BriefProblem {
     /**
      * 提交数
      */
-    private Integer submit;
+    private Integer submitted;
 
     /**
      * 难度

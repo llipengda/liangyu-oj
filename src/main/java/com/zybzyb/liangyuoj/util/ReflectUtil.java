@@ -28,13 +28,15 @@ public class ReflectUtil {
         for (var var2 : var1.getClass().getDeclaredFields()){
             var2.setAccessible(true);
             if (var2.get(var1) != null) {
-                if(StringUtil.isBlank((String)var2.get(var1))){
-                    continue;
+                if(var2.get(var1) instanceof String var3){
+                    if(StringUtil.isBlank(var3)){
+                        continue;
+                    }
                 }
-                Field var3 = var0.getClass().getDeclaredField(var2.getName());
-                var3.setAccessible(true);
-                if(!Objects.equals(var2.get(var1),var3.get(var0))){
-                    var3.set(var0, var2.get(var1));
+                Field var4 = var0.getClass().getDeclaredField(var2.getName());
+                var4.setAccessible(true);
+                if(!Objects.equals(var2.get(var1),var4.get(var0))){
+                    var4.set(var0, var2.get(var1));
                 }
             }
         }
