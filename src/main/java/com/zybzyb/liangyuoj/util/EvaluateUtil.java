@@ -2,10 +2,13 @@ package com.zybzyb.liangyuoj.util;
 
 import java.io.*;
 import java.nio.file.*;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
 import com.zybzyb.liangyuoj.entity.EvaluateResult;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 评测工具类
@@ -14,6 +17,7 @@ import com.zybzyb.liangyuoj.entity.EvaluateResult;
  * @author xw, pdli, zyb
  * @version 2023/11/23
  */
+@Slf4j
 public class EvaluateUtil {
 
     public static EvaluateResult execute(String sourceCode, String expectedOutput) throws Exception {
@@ -26,10 +30,16 @@ public class EvaluateUtil {
             }
         }
 
-        String className = RegexUtil.getClassName(sourceCode);
-        if (className == null) {
-            return new EvaluateResult(EvaluateStatus.CE,
-                "Compilation Error: \n" + "No public class found or too many public classes.", null);
+        String className = "Solution" + UUID.randomUUID()
+            .toString()
+            .replace("-", "");
+        sourceCode = RegexUtil.replaceClassName(sourceCode, className);
+        if (sourceCode == null) {
+            return new EvaluateResult(
+                EvaluateStatus.CE,
+                "Compilation Error: \n" + "No public class found or too many public classes.",
+                null
+            );
         }
         String javaFileName = workDir + className + ".java";
         String classOutputPath = ".";
@@ -46,15 +56,19 @@ public class EvaluateUtil {
 
             // 编译如果超时了，就打印一个编译超时
             if (!compile.waitFor(10, TimeUnit.SECONDS)) {
-                System.out.println("Compilation Time Limit Exceeded.");
-                return new EvaluateResult(EvaluateStatus.CE, "Compilation Time Limit Exceeded.", 10.0);
+                log.info("Compilation Time Limit Exceeded.");
+                return new EvaluateResult(
+                    EvaluateStatus.CE,
+                    "Compilation Time Limit Exceeded.",
+                    10.0
+                );
             }
 
             // 编译如果失败了，就打印一个编译失败+原因
             if (compile.exitValue() != 0) {
                 String errors = new String(compile.getErrorStream()
                     .readAllBytes());
-                System.out.println("Compilation Error: \n" + errors);
+                log.info("Compilation Error: \n" + errors);
                 return new EvaluateResult(EvaluateStatus.CE, errors, null);
             }
 
@@ -74,24 +88,24 @@ public class EvaluateUtil {
                 // 判断输出正误
                 if (output.trim()
                     .equals(expectedOutput.trim())) {
-                    System.out.println("Correct Answer.");
+                    log.info("Correct Answer.");
                     run.destroy();
                     return new EvaluateResult(EvaluateStatus.AC, "评测通过", time / 1000.0);
                 } else {
-                    System.out.println("Wrong Answer.");
-                    System.out.println("Expected Output: \n" + expectedOutput);
-                    System.out.println("Program Output: \n" + output);
+                    log.info("Wrong Answer.");
+                    log.info("Expected Output: \n" + expectedOutput);
+                    log.info("Program Output: \n" + output);
                     return new EvaluateResult(EvaluateStatus.WA, output, time / 1000.0);
                 }
             } else if (!finished) {
-                System.out.println("Time Limit Exceeded.");
+                log.info("Time Limit Exceeded.");
                 run.destroy();
                 return new EvaluateResult(EvaluateStatus.TLE, "Time Limit Exceeded.", 2.0);
             } else if (run.exitValue() != 0) {
-                System.out.println("Runtime Error.");
+                log.info("Runtime Error.");
                 String errors = new String(run.getErrorStream()
                     .readAllBytes());
-                System.out.println("Program Output: \n" + errors);
+                log.info("Program Output: \n" + errors);
                 run.destroy();
                 return new EvaluateResult(EvaluateStatus.RE, errors, null);
             }
@@ -99,10 +113,10 @@ public class EvaluateUtil {
         } finally {
             // 删除跑完之后的文件
             if (new File(javaFileName).exists()) {
-                System.out.println("delete .java :" + new File(javaFileName).delete());
+                log.info("delete .java :" + new File(javaFileName).delete());
             }
             if (new File(javaFileName.replace(".java", "") + ".class").exists()) {
-                System.out.println("delete .class :" + new File(javaFileName.replace(".java", "") + ".class").delete());
+                log.info("delete .class :" + new File(javaFileName.replace(".java", "") + ".class").delete());
             }
         }
     }
