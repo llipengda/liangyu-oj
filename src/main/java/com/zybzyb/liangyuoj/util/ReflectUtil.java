@@ -1,8 +1,5 @@
 package com.zybzyb.liangyuoj.util;
 
-import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
-import com.zybzyb.liangyuoj.entity.Problem;
-
 import java.lang.reflect.Field;
 import java.util.Objects;
 

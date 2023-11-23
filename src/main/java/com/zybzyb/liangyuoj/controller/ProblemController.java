@@ -1,7 +1,6 @@
 package com.zybzyb.liangyuoj.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zybzyb.liangyuoj.common.CommonErrorCode;
@@ -18,17 +17,13 @@ import com.zybzyb.liangyuoj.mapper.SubmissionMapper;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
 import com.zybzyb.liangyuoj.util.EvaluateUtil;
 import com.zybzyb.liangyuoj.util.ReflectUtil;
-import com.zybzyb.liangyuoj.util.StringUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
 import java.util.*;
-
-import static com.zybzyb.liangyuoj.common.CommonErrorCode.SQL_ERROR;
 
 @RestController
 @RequestMapping("/pro")

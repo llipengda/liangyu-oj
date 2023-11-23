@@ -1,27 +1,18 @@
 package com.zybzyb.liangyuoj.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zybzyb.liangyuoj.common.CommonErrorCode;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.UpdateUserRequest;
-import com.zybzyb.liangyuoj.controller.response.LoginResponse;
 import com.zybzyb.liangyuoj.entity.JWTUser;
 import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
-import com.zybzyb.liangyuoj.util.JWTUtil;
-import com.zybzyb.liangyuoj.util.PasswordUtil;
 import com.zybzyb.liangyuoj.util.ReflectUtil;
-import com.zybzyb.liangyuoj.util.StringUtil;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.Field;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")

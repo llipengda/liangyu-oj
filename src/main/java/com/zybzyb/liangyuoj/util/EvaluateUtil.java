@@ -2,7 +2,6 @@ package com.zybzyb.liangyuoj.util;
 
 import java.io.*;
 import java.nio.file.*;
-import java.util.Timer;
 import java.util.concurrent.*;
 
 import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
