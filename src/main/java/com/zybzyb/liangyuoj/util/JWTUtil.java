@@ -10,6 +10,11 @@ import io.jsonwebtoken.security.Keys;
 
 import java.util.*;
 
+/**
+ * JWT工具类
+ * @author xw,pdli
+ * @version 2023/11/22
+ */
 public class JWTUtil {
 
     private final static String SECRET = "bml1bW9jaG91Ymlubm1zbGZ4eGt3b2NoYW5zaGluaWRlbWVuZw==";

@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author pdli
+ * 断言工具类
+ * @author yannis, pdli
+ * @version 2023/11/21
  */
 public class AssertUtil {
 

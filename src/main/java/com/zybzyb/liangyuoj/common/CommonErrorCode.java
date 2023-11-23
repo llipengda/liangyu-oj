@@ -19,6 +19,8 @@ public enum CommonErrorCode {
     EMAIL_ALREADY_EXIST(4002, "邮箱已存在"),
     TOKEN_ERROR(4003, "token 校验失败,"),
     DATA_ERROR(4004, "邮箱或密码错误"),
+    SQL_ERROR(4005, "SQL 错误"),
+    PASSWORD_SAME(4006, "新旧密码相同"),
     ;
 
     /**
