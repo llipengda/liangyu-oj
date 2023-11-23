@@ -21,6 +21,7 @@ public class RegexUtil {
         if (className == null) {
             return null;
         }
+        newClassName = Pattern.quote(newClassName);
         return code.replaceAll(
             "([;\\},<>^\\s\\)\\{\\(])" + className + "([\\s+\\(\\)<,>\\{\\.:])",
             "$1" + newClassName + "$2"
