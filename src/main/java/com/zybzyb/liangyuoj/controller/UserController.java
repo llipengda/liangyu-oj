@@ -33,6 +33,26 @@ public class UserController {
     private UserMapper userMapper;
 
     /**
+     * 获取用户信息
+     * @param request 请求
+     * @return 用户信息
+     */
+    @GetMapping("/info")
+    public Result<User> info(HttpServletRequest request) {
+        try {
+            JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
+            User user = userMapper.selectById(jwtUser.getId());
+            user.setPassword(null);
+            return Result.success(user);
+        } catch (CommonException e) {
+            return Result.fail(e.getCommonErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * 用户更新信息
      * @param updateUserRequest 更新信息
      * @param request           请求

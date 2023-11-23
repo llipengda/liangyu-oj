@@ -8,11 +8,13 @@ import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.LoginRequest;
 import com.zybzyb.liangyuoj.controller.request.SignUpRequest;
 import com.zybzyb.liangyuoj.controller.response.LoginResponse;
+import com.zybzyb.liangyuoj.entity.JWTUser;
 import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
 import com.zybzyb.liangyuoj.util.JWTUtil;
 import com.zybzyb.liangyuoj.util.PasswordUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +53,8 @@ public class AccountController {
                     .type(2)
                     .password(PasswordUtil.hashPassword(signUpRequest.getPassword()))
                     .nickname("用户" + signUpRequest.getEmail().replaceAll("@.*", ""))
+                    .submitted(0)
+                    .solved(0)
                     .build();
             userMapper.insert(user);
 
@@ -104,4 +108,53 @@ public class AccountController {
             return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * 用户更新密码
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     * @param request     请求
+     * @return 更新结果
+     */
+    @PutMapping(value = "/updatePassword", produces = "application/json")
+    public Result<User> updatePassword(String oldPassword,String newPassword, HttpServletRequest request) {
+        try {
+            JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
+            User user = userMapper.selectById(jwtUser.getId());
+
+            if (!Objects.equals(user.getPassword(), PasswordUtil.hashPassword(oldPassword))) {
+                return Result.fail(CommonErrorCode.PASSWORD_SAME);
+            }
+
+            user.setPassword(PasswordUtil.hashPassword(newPassword));
+            userMapper.updateById(user);
+            user.setPassword(null);
+            return Result.success(user);
+        } catch (CommonException e) {
+            return Result.fail(e.getCommonErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 用户注销
+     * @return 更新结果
+     */
+    @DeleteMapping(value = "/delete", produces = "application/json")
+    public Result<Integer> delete(HttpServletRequest request) {
+        try {
+            JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
+            User user = userMapper.selectById(jwtUser.getId());
+            user.setDeleteTime(new Date());
+            return Result.success(userMapper.updateById(user));
+        } catch (CommonException e) {
+            return Result.fail(e.getCommonErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
