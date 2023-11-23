@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class CommonException extends RuntimeException {
+public class CommonException extends Exception {
     /**
      * 错误码
      */

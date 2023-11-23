@@ -57,6 +57,9 @@ public class Result<T> {
      * @return Result
      */
     public static <T> Result<T> fail(CommonErrorCode errorCode, T data, String msg) {
+        if (msg == null) {
+            msg = errorCode.getMsg();
+        }
         return new Result<>(errorCode.getCode(), data, msg);
     }
 
@@ -68,8 +71,8 @@ public class Result<T> {
      * @param <T>       数据类型
      * @return Result
      */
-    public static <T> Result<T> fail(CommonErrorCode errorCode, T data) {
-        return new Result<>(errorCode.getCode(), data, errorCode.getMsg());
+    public static <T> Result<T> fail(CommonErrorCode errorCode, String message) {
+        return new Result<>(errorCode.getCode(), null, message);
     }
 
     /**

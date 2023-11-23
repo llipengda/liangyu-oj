@@ -13,6 +13,6 @@ import java.util.List;
 public interface ProblemMapper extends BaseMapper<Problem> {
 
     @Select("SELECT id, title, create_time, accepted, submitted, difficulty FROM problem WHERE chapter = #{chapter} AND delete_time IS NULL")
-    List<BriefProblem> getBriefProblemList(@Param("chapter")Integer chapter);
+    List<BriefProblem> getBriefProblemList(@Param("chapter") Integer chapter);
 
 }

@@ -1,13 +1,10 @@
 package com.zybzyb.liangyuoj.controller;
 
-import com.zybzyb.liangyuoj.common.CommonErrorCode;
 import com.zybzyb.liangyuoj.common.Result;
-import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.UpdateUserRequest;
-import com.zybzyb.liangyuoj.entity.JWTUser;
 import com.zybzyb.liangyuoj.entity.User;
-import com.zybzyb.liangyuoj.mapper.UserMapper;
-import com.zybzyb.liangyuoj.util.ReflectUtil;
+import com.zybzyb.liangyuoj.service.UserService;
+import com.zybzyb.liangyuoj.util.JWTUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     /**
      * 获取用户信息
@@ -31,18 +28,8 @@ public class UserController {
      */
     @GetMapping("/info")
     public Result<User> info(HttpServletRequest request) {
-        try {
-            JWTUser jwtUser = (JWTUser) request.getSession()
-                .getAttribute("user");
-            User user = userMapper.selectById(jwtUser.getId());
-            user.setPassword(null);
-            return Result.success(user);
-        } catch (CommonException e) {
-            return Result.fail(e.getCommonErrorCode());
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-            return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
-        }
+        Long userId = JWTUtil.getUserIdFromRequest(request);
+        return Result.success(userService.getUserInfo(userId));
     }
 
     /**
@@ -51,25 +38,12 @@ public class UserController {
      * @param updateUserRequest 更新信息
      * @param request           请求
      * @return 更新结果
+     * @throws Exception
      */
     @PutMapping(value = "/update", produces = "application/json")
-    public Result<User> update(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest request) {
-        try {
-            JWTUser jwtUser = (JWTUser) request.getSession()
-                .getAttribute("user");
-            User user = userMapper.selectById(jwtUser.getId());
-
-            ReflectUtil.update(user, updateUserRequest);
-            userMapper.updateById(user);
-            user.setPassword(null);
-            return Result.success(user);
-        } catch (CommonException e) {
-            return Result.fail(e.getCommonErrorCode());
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-            return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
-        }
+    public Result<User> update(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest request)
+        throws Exception {
+        Long userId = JWTUtil.getUserIdFromRequest(request);
+        return Result.success(userService.updateUser(updateUserRequest, userId));
     }
-
-
 }

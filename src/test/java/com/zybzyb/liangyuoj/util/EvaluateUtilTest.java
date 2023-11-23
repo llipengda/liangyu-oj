@@ -1,10 +1,8 @@
-package com.zybzyb.liangyuoj;
+package com.zybzyb.liangyuoj.util;
 
 import org.junit.jupiter.api.Test;
 
 import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
-import com.zybzyb.liangyuoj.util.EvaluateUtil;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class EvaluateUtilTest {
