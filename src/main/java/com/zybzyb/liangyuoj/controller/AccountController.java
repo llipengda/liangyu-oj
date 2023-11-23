@@ -44,18 +44,18 @@ public class AccountController {
 
             QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
             userQueryWrapper.eq("email", signUpRequest.getEmail());
-            if (userMapper.selectCount(userQueryWrapper) > 0)
-                return Result.fail(CommonErrorCode.EMAIL_ALREADY_EXIST);
+            if (userMapper.selectCount(userQueryWrapper) > 0) return Result.fail(CommonErrorCode.EMAIL_ALREADY_EXIST);
 
             User user = User.builder()
-                    .createTime(new Date())
-                    .email(signUpRequest.getEmail())
-                    .type(2)
-                    .password(PasswordUtil.hashPassword(signUpRequest.getPassword()))
-                    .nickname("用户" + signUpRequest.getEmail().replaceAll("@.*", ""))
-                    .submitted(0)
-                    .solved(0)
-                    .build();
+                .createTime(new Date())
+                .email(signUpRequest.getEmail())
+                .type(2)
+                .password(PasswordUtil.hashPassword(signUpRequest.getPassword()))
+                .nickname("用户" + signUpRequest.getEmail()
+                    .replaceAll("@.*", ""))
+                .submitted(0)
+                .solved(0)
+                .build();
             userMapper.insert(user);
 
             return Result.success(null);
@@ -79,13 +79,13 @@ public class AccountController {
         try {
             String email = loginRequest.getEmail();
             String password = loginRequest.getPassword();
-            if (Objects.equals(email, "test") && Objects.equals(password, "test"))
-                return Result.success(
-                        LoginResponse.builder()
-                                .token(JWTUtil.createJwtToken(User.builder()
-                                        .name("test")
-                                        .build()))
-                                .build());
+            if (Objects.equals(email, "test") && Objects.equals(password, "test")) {
+                return Result.success(LoginResponse.builder()
+                    .token(JWTUtil.createJwtToken(User.builder()
+                        .name("test")
+                        .build()))
+                    .build());
+            }
 
             QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
             userQueryWrapper.eq("email", email);
@@ -94,12 +94,11 @@ public class AccountController {
             if (!PasswordUtil.checkPassword(password, user.getPassword())) {
                 return Result.fail(CommonErrorCode.DATA_ERROR);
             }
-            return Result.success(
-                    LoginResponse.builder()
-                            .userId(user.getId())
-                            .type(user.getType())
-                            .token(JWTUtil.createJwtToken(user))
-                            .build());
+            return Result.success(LoginResponse.builder()
+                .userId(user.getId())
+                .type(user.getType())
+                .token(JWTUtil.createJwtToken(user))
+                .build());
 
         } catch (CommonException e) {
             return Result.fail(e.getCommonErrorCode());
@@ -111,15 +110,17 @@ public class AccountController {
 
     /**
      * 用户更新密码
+     * 
      * @param oldPassword 旧密码
      * @param newPassword 新密码
      * @param request     请求
      * @return 更新结果
      */
     @PutMapping(value = "/updatePassword", produces = "application/json")
-    public Result<User> updatePassword(String oldPassword,String newPassword, HttpServletRequest request) {
+    public Result<User> updatePassword(String oldPassword, String newPassword, HttpServletRequest request) {
         try {
-            JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
+            JWTUser jwtUser = (JWTUser) request.getSession()
+                .getAttribute("user");
             User user = userMapper.selectById(jwtUser.getId());
 
             if (!Objects.equals(user.getPassword(), PasswordUtil.hashPassword(oldPassword))) {
@@ -140,12 +141,14 @@ public class AccountController {
 
     /**
      * 用户注销
+     * 
      * @return 更新结果
      */
     @DeleteMapping(value = "/delete", produces = "application/json")
     public Result<Integer> delete(HttpServletRequest request) {
         try {
-            JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
+            JWTUser jwtUser = (JWTUser) request.getSession()
+                .getAttribute("user");
             User user = userMapper.selectById(jwtUser.getId());
             user.setDeleteTime(new Date());
             return Result.success(userMapper.updateById(user));

@@ -25,13 +25,15 @@ public class UserController {
 
     /**
      * 获取用户信息
+     * 
      * @param request 请求
      * @return 用户信息
      */
     @GetMapping("/info")
     public Result<User> info(HttpServletRequest request) {
         try {
-            JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
+            JWTUser jwtUser = (JWTUser) request.getSession()
+                .getAttribute("user");
             User user = userMapper.selectById(jwtUser.getId());
             user.setPassword(null);
             return Result.success(user);
@@ -45,6 +47,7 @@ public class UserController {
 
     /**
      * 用户更新信息
+     * 
      * @param updateUserRequest 更新信息
      * @param request           请求
      * @return 更新结果
@@ -52,7 +55,8 @@ public class UserController {
     @PutMapping(value = "/update", produces = "application/json")
     public Result<User> update(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest request) {
         try {
-            JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
+            JWTUser jwtUser = (JWTUser) request.getSession()
+                .getAttribute("user");
             User user = userMapper.selectById(jwtUser.getId());
 
             ReflectUtil.update(user, updateUserRequest);
@@ -66,9 +70,6 @@ public class UserController {
             return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 
 
 }

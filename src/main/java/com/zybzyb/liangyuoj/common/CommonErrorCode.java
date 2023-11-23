@@ -1,8 +1,5 @@
 package com.zybzyb.liangyuoj.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -20,8 +17,7 @@ public enum CommonErrorCode {
     TOKEN_ERROR(4003, "token 校验失败,"),
     DATA_ERROR(4004, "邮箱或密码错误"),
     SQL_ERROR(4005, "SQL 错误"),
-    PASSWORD_SAME(4006, "新旧密码相同"),
-    ;
+    PASSWORD_SAME(4006, "新旧密码相同");
 
     /**
      * 错误码
@@ -32,16 +28,4 @@ public enum CommonErrorCode {
      * 错误信息
      */
     private final String msg;
-
-    /**
-     * 转换为 Map
-     * 
-     * @return Map
-     */
-    public Map<String, Object> toMap() {
-        Map<String, Object> res = new HashMap<>();
-        res.put("code", this.code);
-        res.put("msg", this.msg);
-        return res;
-    }
 }

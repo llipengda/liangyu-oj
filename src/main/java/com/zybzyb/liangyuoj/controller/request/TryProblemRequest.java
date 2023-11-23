@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(description = "做题请求")
 public class TryProblemRequest {
-        /**
-        * 题目 ID
-        */
-        private Long problemId;
+    /**
+     * 题目 ID
+     */
+    private Long problemId;
 
-        /**
-        * 代码
-        */
-        private String code;
+    /**
+     * 代码
+     */
+    private String code;
 
 }

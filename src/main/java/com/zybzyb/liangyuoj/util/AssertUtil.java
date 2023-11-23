@@ -14,10 +14,6 @@ import java.util.Objects;
  * @version 2023/11/21
  */
 public class AssertUtil {
-
-    public AssertUtil() {
-    }
-
     public static void isTrue(boolean expValue, CommonErrorCode resultCode, Object obj) {
         if (!expValue) {
             if (obj instanceof String) {
