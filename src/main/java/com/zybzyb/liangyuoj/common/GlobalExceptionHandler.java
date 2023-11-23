@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = CommonException.class)
     public <T> Result<T> commonExceptionHandler(CommonException e) {
-        log.warn("CommonException: {}", e);
+        log.warn("CommonException:", e);
         return Result.fail(e.getCommonErrorCode());
     }
 
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Exception.class)
     public <T> Result<T> exceptionHandler(Exception e) {
-        log.error("Exception: {}", e);
+        log.error("Exception:", e);
         return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 }
