@@ -1,6 +1,7 @@
 package com.zybzyb.liangyuoj.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.zybzyb.liangyuoj.annotation.NoAuth;
 import com.zybzyb.liangyuoj.common.CommonErrorCode;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.common.exception.CommonException;
@@ -34,6 +35,7 @@ public class UserController {
      * @param signUpRequest 注册信息
      * @return 注册结果
      */
+    @NoAuth
     @PostMapping(value = "/signUp", produces = "application/json")
     public Result<User> signUp(@RequestBody SignUpRequest signUpRequest) {
         try {
@@ -69,6 +71,7 @@ public class UserController {
      * @param loginRequest 登录信息
      * @return 登录结果
      */
+    @NoAuth
     @PostMapping(value = "/login", produces = "application/json")
     public Result<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         try {
