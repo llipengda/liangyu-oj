@@ -13,10 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Page<T> {
-    private Integer pageNum = 0;
-    private Integer pageSize = 10;
+    private Integer pageNum;
+    private Integer pageSize;
     private Long total;
-    private int pages;
+    private Integer pages;
     private List<T> list;
 
     public Page(PageInfo<T> pageInfo) {

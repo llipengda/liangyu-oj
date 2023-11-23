@@ -10,7 +10,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class CommonException extends RuntimeException {
+public class CommonException extends Exception {
     /**
      * 错误码
      */
@@ -22,12 +22,15 @@ public class CommonException extends RuntimeException {
     private final String errorMessage;
 
     public CommonException(CommonErrorCode commonErrorCode) {
+        super(commonErrorCode.getCode() + ": " + commonErrorCode.getMsg());
         this.commonErrorCode = commonErrorCode;
         this.errorMessage = commonErrorCode.getMsg();
     }
 
     public CommonException() {
-        this.commonErrorCode = CommonErrorCode.UNKNOWN_ERROR;
-        this.errorMessage = CommonErrorCode.UNKNOWN_ERROR.getMsg();
+        super(CommonErrorCode.UNKNOWN_ERROR.getCode() + ": " + CommonErrorCode.UNKNOWN_ERROR.getMsg());
+        CommonErrorCode unknownError = CommonErrorCode.UNKNOWN_ERROR;
+        this.commonErrorCode = unknownError;
+        this.errorMessage = unknownError.getMsg();
     }
 }

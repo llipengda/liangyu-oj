@@ -17,14 +17,13 @@ public class SpringDocConfig {
     @Bean
     OpenAPI defaultOpenAPI() {
         return new OpenAPI().info(info())
-                .externalDocs(documentation());
+            .externalDocs(documentation());
     }
 
     public Info info() {
-        return new Info()
-                .title("Liang Yu Online Judge")
-                .version("V1.0.0")
-                .description("良育OJ API文档");
+        return new Info().title("Liangyu Online Judge")
+            .version("V1.0.0")
+            .description("良育OJ API文档");
     }
 
     public ExternalDocumentation documentation() {
@@ -34,19 +33,21 @@ public class SpringDocConfig {
     @Bean
     GroupedOpenApi userApi() {
         return GroupedOpenApi.builder()
-                .displayName("接口")
-                .group("api")
-                .packagesToScan("com.zybzyb.liangyuoj")
-                .addOpenApiCustomizer(openApiCustomizer())
-                .addOperationCustomizer(operationCustomizer())
-                .build();
+            .displayName("接口")
+            .group("api")
+            .packagesToScan("com.zybzyb.liangyuoj")
+            .addOpenApiCustomizer(openApiCustomizer())
+            .addOperationCustomizer(operationCustomizer())
+            .build();
     }
 
     public OpenApiCustomizer openApiCustomizer() {
-        return api -> api.getComponents().addSecuritySchemes("Authorization",
-                new SecurityScheme().name("认证")
-                        .type(SecurityScheme.Type.HTTP).description("JWT 认证 `Bearer + ' ' + token`")
-                        .scheme("bearer").bearerFormat("JWT"));
+        return api -> api.getComponents()
+            .addSecuritySchemes("Authorization", new SecurityScheme().name("认证")
+                .type(SecurityScheme.Type.HTTP)
+                .description("JWT 认证 `Bearer + ' ' + token`")
+                .scheme("bearer")
+                .bearerFormat("JWT"));
     }
 
     public OperationCustomizer operationCustomizer() {
