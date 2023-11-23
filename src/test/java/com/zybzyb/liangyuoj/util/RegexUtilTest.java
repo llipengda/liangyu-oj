@@ -61,7 +61,7 @@ public class RegexUtilTest {
     void replaceClassNameSimple() {
         String code = "public class MyClass { }";
         String newClassName = "NewClass";
-        String expected = "public class NewClass { }";
+        String expected = "public class QNewClassE { }";
         String actual = RegexUtil.replaceClassName(code, newClassName);
         assertEquals(expected, actual);
     }
@@ -87,15 +87,15 @@ public class RegexUtilTest {
             """;
         String newClassName = "NewClass";
         String expected = """
-            public class NewClass {
+            public class QNewClassE {
                 public static void main(String[] args) {
-                    NewClass myClass = new NewClass();
+                    QNewClassE myClass = new QNewClassE();
                     System.out.println(myClass);
-                    NewClass myClass2 = new NewClass ();
-                    System.out.println(myClass2);NewClass myClass3 = new NewClass();
-                    if (true)NewClass myClass4 = new NewClass();
-                    if (false) {NewClass myClass5 = new NewClass();
-                        if (myclass5 instanceof NewClass) {
+                    QNewClassE myClass2 = new QNewClassE ();
+                    System.out.println(myClass2);QNewClassE myClass3 = new QNewClassE();
+                    if (true)QNewClassE myClass4 = new QNewClassE();
+                    if (false) {QNewClassE myClass5 = new QNewClassE();
+                        if (myclass5 instanceof QNewClassE) {
                         }
                     }
                     OtherMyClass otherMyClass = new OtherMyClass();
@@ -131,21 +131,21 @@ public class RegexUtilTest {
             """;
         String newClassName = "NewClass";
         String expected = """
-            public class NewClass<T> {
+            public class QNewClassE<T> {
                 public static void main(String[] args) {
-                    NewClass<String> myClass = new NewClass<String>();
+                    QNewClassE<String> myClass = new QNewClassE<String>();
                     System.out.println(myClass);
-                    NewClass<String> myClass2 = new NewClass <String> ();
-                    System.out.println(myClass2);NewClass<String> myClass3 = new NewClass<String>();
-                    if (true)NewClass<String> myClass4 = new NewClass<String>();
-                    if (false) {NewClass<String> myClass5 = new NewClass<String>();
-                        if (myclass5 instanceof NewClass<String>) {
+                    QNewClassE<String> myClass2 = new QNewClassE <String> ();
+                    System.out.println(myClass2);QNewClassE<String> myClass3 = new QNewClassE<String>();
+                    if (true)QNewClassE<String> myClass4 = new QNewClassE<String>();
+                    if (false) {QNewClassE<String> myClass5 = new QNewClassE<String>();
+                        if (myclass5 instanceof QNewClassE<String>) {
                         }
                     }
                     OtherMyClass<String> otherMyClass = new OtherMyClass<String>();
-                    List<NewClass<String>> list = new ArrayList< NewClass<String>>();
-                    Map<String,NewClass<String>> map = new HashMap<String, NewClass<String>>();
-                    Map<NewClass<String>,String> map2 = new HashMap<NewClass<String>, String>();
+                    List<QNewClassE<String>> list = new ArrayList< QNewClassE<String>>();
+                    Map<String,QNewClassE<String>> map = new HashMap<String, QNewClassE<String>>();
+                    Map<QNewClassE<String>,String> map2 = new HashMap<QNewClassE<String>, String>();
                 }
             }
             class OtherMyClass<T> { }
@@ -171,15 +171,15 @@ public class RegexUtilTest {
             """;
         String newClassName = "NewClass";
         String expected = """
-            public class NewClass {
+            public class QNewClassE {
                 public static void main(String[] args) {
-                    Class<?> myClass = NewClass.class;
+                    Class<?> myClass = QNewClassE.class;
                     System.out.println(myClass);
-                    Class<?> myClass2 = NewClass .class;
-                    NewClass.myMethod();
+                    Class<?> myClass2 = QNewClassE .class;
+                    QNewClassE.myMethod();
                 }
                 public static void myMethod() {
-                    Class<?> myClass3 = NewClass.class;
+                    Class<?> myClass3 = QNewClassE.class;
                 }
             }
             """;
@@ -209,10 +209,10 @@ public class RegexUtilTest {
             """;
         String newClassName = "NewClass";
         String expected = """
-            public class NewClass {
+            public class QNewClassE {
                 public static void main(String[] args) {
-                    List<NewClass> list = new ArrayList<NewClass>();
-                    list.forEach(NewClass::myMethod);
+                    List<QNewClassE> list = new ArrayList<QNewClassE>();
+                    list.forEach(QNewClassE::myMethod);
                 }
                 public void myMethod() {
                 }

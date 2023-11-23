@@ -34,6 +34,7 @@ public class EvaluateUtil {
             .toString()
             .replace("-", "");
         sourceCode = RegexUtil.replaceClassName(sourceCode, className);
+        className = "Q" + className + "E";
         if (sourceCode == null) {
             return new EvaluateResult(
                 EvaluateStatus.CE,

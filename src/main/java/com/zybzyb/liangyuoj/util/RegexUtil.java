@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class RegexUtil {
     public static String getClassName(String code) {
-        Matcher matcher = Pattern.compile("public\\s+class\\s+(\\w+)\\s*(<\\w.*>)*\\s*\\{")
+        Matcher matcher = Pattern.compile("public\\s+class\\s+(\\w+)\\s*(<.*>)?\\s*\\{")
             .matcher(code);
         List<String> res = new ArrayList<>();
         while (matcher.find()) {
@@ -21,6 +21,7 @@ public class RegexUtil {
         if (className == null) {
             return null;
         }
+        newClassName = Pattern.quote(newClassName);
         return code.replaceAll(
             "([;\\},<>^\\s\\)\\{\\(])" + className + "([\\s+\\(\\)<,>\\{\\.:])",
             "$1" + newClassName + "$2"
