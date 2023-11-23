@@ -79,5 +79,6 @@ public class AccountServiceImpl implements AccountService {
         User user = userMapper.selectById(userId);
         user.setDeleteTime(new Date());
         return userMapper.updateById(user) == 1;
+        // FIXME: 用户注销后还能登录
     }
 }
