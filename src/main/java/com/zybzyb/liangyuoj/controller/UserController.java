@@ -63,6 +63,7 @@ public class UserController {
             e.printStackTrace(System.err);
             return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
+        // FIXME: 不要返回密码！
     }
 
     /**
@@ -106,5 +107,4 @@ public class UserController {
             return Result.fail(CommonErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

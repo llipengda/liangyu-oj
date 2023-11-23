@@ -64,5 +64,7 @@ public class UserInfoController {
         userMapper.updateById(user);
 
         return Result.success(user);
+
+        // FIXME: 不要返回密码！
     }
 }
