@@ -1,5 +1,6 @@
 package com.zybzyb.liangyuoj.controller;
 
+import com.zybzyb.liangyuoj.annotation.Role;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.controller.request.Hello6Params;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "测试", description = "springdoc 测试")
 public class TestController {
     // 自动 NotNull
+    @Role(type = 0)
     @Operation(summary = "自动 NotNull", description = "自动 NotNull")
     @GetMapping("/hello1")
     public Result<String> hello1(@NotNull String name) {

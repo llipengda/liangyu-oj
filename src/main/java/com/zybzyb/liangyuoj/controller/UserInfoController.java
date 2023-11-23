@@ -2,8 +2,11 @@ package com.zybzyb.liangyuoj.controller;
 
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.controller.request.UpdateUserRequest;
+import com.zybzyb.liangyuoj.entity.JWTUser;
 import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
+import com.zybzyb.liangyuoj.util.StringUtil;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,26 +36,35 @@ public class UserInfoController {
      */
     @PostMapping(value = "/update", produces = "application/json")
     public Result<User> update(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
+        JWTUser jwtUser = (JWTUser) request.getSession().getAttribute("user");
 
-        if (!Objects.equals(updateUserRequest.getAvatar(), user.getAvatar())) {
+        User user = userMapper.selectById(jwtUser.getId());
+
+        if (!Objects.equals(updateUserRequest.getAvatar(), user.getAvatar())
+                && StringUtil.notBlank(updateUserRequest.getAvatar())) {
             user.setAvatar(updateUserRequest.getAvatar());
         }
-        if (!Objects.equals(updateUserRequest.getMotto(), user.getMotto())) {
+        if (!Objects.equals(updateUserRequest.getMotto(), user.getMotto())
+                && StringUtil.notBlank(updateUserRequest.getMotto())) {
             user.setMotto(updateUserRequest.getMotto());
         }
-        if (!Objects.equals(updateUserRequest.getNickname(), user.getNickname())) {
+        if (!Objects.equals(updateUserRequest.getNickname(), user.getNickname())
+                && StringUtil.notBlank(updateUserRequest.getNickname())) {
             user.setNickname(updateUserRequest.getNickname());
         }
-        if (!Objects.equals(updateUserRequest.getGrade(), user.getGrade())) {
+        if (!Objects.equals(updateUserRequest.getGrade(), user.getGrade())
+                && StringUtil.notBlank(updateUserRequest.getGrade())) {
             user.setGrade(updateUserRequest.getGrade());
         }
-        if (!Objects.equals(updateUserRequest.getName(), user.getName())) {
+        if (!Objects.equals(updateUserRequest.getName(), user.getName())
+                && StringUtil.notBlank(updateUserRequest.getName())) {
             user.setName(updateUserRequest.getName());
         }
 
         userMapper.updateById(user);
 
         return Result.success(user);
+
+        // FIXME: 不要返回密码！
     }
 }
