@@ -4,21 +4,29 @@ import com.zybzyb.liangyuoj.annotation.NoAuth;
 import com.zybzyb.liangyuoj.annotation.Role;
 import com.zybzyb.liangyuoj.entity.JWTUser;
 import com.zybzyb.liangyuoj.util.JWTUtil;
+import io.micrometer.common.lang.NonNullApi;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+/**
+ * 拦截器
+ *
+ * @author xw, pdli
+ * @version 2023/11/23
+ * @see com.zybzyb.liangyuoj.annotation.NoAuth
+ * @see com.zybzyb.liangyuoj.annotation.Role
+ */
+@NonNullApi
 public class Interceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
-        if (!(handler instanceof HandlerMethod)) {
+        throws Exception {
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
         if (handlerMethod.getMethodAnnotation(NoAuth.class) != null) {
             return true;
         }

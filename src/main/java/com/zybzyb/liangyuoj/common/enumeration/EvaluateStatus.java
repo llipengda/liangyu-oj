@@ -6,5 +6,10 @@ public enum EvaluateStatus {
     TLE,
     MLE,
     RE,
-    CE
+    CE;
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
 }

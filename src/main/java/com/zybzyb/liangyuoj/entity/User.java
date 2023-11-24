@@ -70,4 +70,19 @@ public class User implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * 删除时间
+     */
+    private Date deleteTime;
+
+    /**
+     * 提交数
+     */
+    private Integer submitted;
+
+    /**
+     * 做题数
+     */
+    private Integer solved;
+
 }
