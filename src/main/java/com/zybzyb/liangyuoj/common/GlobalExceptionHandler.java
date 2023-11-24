@@ -10,6 +10,11 @@ import com.zybzyb.liangyuoj.common.exception.CommonException;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 全局异常处理
+ * @author pdli
+ * @version 2023/11/24
+ */
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {

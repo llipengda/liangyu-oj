@@ -3,6 +3,9 @@ package com.zybzyb.liangyuoj.util;
 import org.junit.jupiter.api.Test;
 
 import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
+
+import java.util.Scanner;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EvaluateUtilTest {
@@ -11,7 +14,7 @@ class EvaluateUtilTest {
     void correctOutput() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello, World!\"); } }";
         String expectedOutput = "Hello, World!\n";
-        var res = EvaluateUtil.execute(sourceCode, expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "",expectedOutput);
         System.out.println(res);
         assertEquals(EvaluateStatus.AC, res.getStatus());
     }
@@ -20,7 +23,7 @@ class EvaluateUtilTest {
     void wrongOutput() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello\"); } }";
         String expectedOutput = "Hello, World!\n";
-        var res = EvaluateUtil.execute(sourceCode, expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "",expectedOutput);
         System.out.println(res);
         assertEquals(EvaluateStatus.WA, res.getStatus());
     }
@@ -29,7 +32,7 @@ class EvaluateUtilTest {
     void compilationError() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello, World!\") } }";
         String expectedOutput = "Hello, World!\n";
-        var res = EvaluateUtil.execute(sourceCode, expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "",expectedOutput);
         System.out.println(res);
         assertEquals(EvaluateStatus.CE, res.getStatus());
     }
@@ -38,7 +41,7 @@ class EvaluateUtilTest {
     void timeLimitExceeded() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { while (true); } }";
         String expectedOutput = "Hello, World!\n";
-        var res = EvaluateUtil.execute(sourceCode, expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "",expectedOutput);
         System.out.println(res);
         assertEquals(EvaluateStatus.TLE, res.getStatus());
     }
@@ -47,8 +50,23 @@ class EvaluateUtilTest {
     void runtimeError() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { int x = 5 / 0; } }";
         String expectedOutput = "Hello, World!\n";
-        var res = EvaluateUtil.execute(sourceCode, expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "",expectedOutput);
         System.out.println(res);
         assertEquals(EvaluateStatus.RE, res.getStatus());
+    }
+
+    @Test
+    void inputTest() throws Exception {
+        String sourceCode = "import java.util.Scanner; public class Solution { public static void main(String[] args) { Scanner scanner = new Scanner(System.in); System.out.println(scanner.nextLine()); } }";
+        String input = "Hello, World!";
+        String expectedOutput = "Hello, World!\n";
+        var res = EvaluateUtil.execute(sourceCode, input,expectedOutput);
+        System.out.println(res);
+        assertEquals(EvaluateStatus.AC, res.getStatus());
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(scanner.nextLine());
     }
 }

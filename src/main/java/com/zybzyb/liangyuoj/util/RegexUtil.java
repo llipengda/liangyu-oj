@@ -6,6 +6,11 @@ import java.util.List;
 import com.google.re2j.Matcher;
 import com.google.re2j.Pattern;
 
+/**
+ * 正则表达式工具类
+ * @author pdli
+ * @version 2023/11/24
+ */
 public class RegexUtil {
     public static String getClassName(String code) {
         Matcher matcher = Pattern.compile("public\\s+class\\s+(\\w+)\\s*(<.*>)?")
@@ -24,7 +29,7 @@ public class RegexUtil {
         }
         className = Pattern.quote(className);
         return code.replaceAll(
-            "([;\\},<>^\\s\\)\\{\\(])" + className + "([\\s+\\(\\)<,>\\{\\.:])",
+            "([;},<>^\\s){(])" + className + "([\\s+()<,>{.:])",
             "$1" + newClassName + "$2"
         );
     }

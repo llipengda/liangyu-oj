@@ -29,7 +29,7 @@ public class AccountController {
      * 
      * @param signUpRequest 注册信息
      * @return 注册结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/signUp", produces = "application/json")
@@ -43,7 +43,7 @@ public class AccountController {
      * 
      * @param loginRequest 登录信息
      * @return 登录结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/login", produces = "application/json")
@@ -58,7 +58,7 @@ public class AccountController {
      * @param newPassword 新密码
      * @param request     请求
      * @return 更新结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @PutMapping(value = "/updatePassword", produces = "application/json")
     public Result<User> updatePassword(String oldPassword, String newPassword, HttpServletRequest request)
@@ -69,7 +69,6 @@ public class AccountController {
 
     /**
      * 用户注销
-     * 
      * @return 更新结果
      */
     @DeleteMapping(value = "/delete", produces = "application/json")
@@ -83,7 +82,7 @@ public class AccountController {
      * 
      * @param email 邮箱
      * @return 发送结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/sendCode", produces = "application/json")
@@ -98,7 +97,7 @@ public class AccountController {
      * @param email 邮箱
      * @param code  验证码
      * @return 验证结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/verifyCode", produces = "application/json")

@@ -67,7 +67,7 @@ public class AccountServiceImpl implements AccountService {
         String password = loginRequest.getPassword();
 
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("email", email);
+        userQueryWrapper.eq("email", email).isNull("delete_time");
 
         User user = userMapper.selectOne(userQueryWrapper);
         if (!PasswordUtil.checkPassword(password, user.getPassword())) {
@@ -97,17 +97,10 @@ public class AccountServiceImpl implements AccountService {
         User user = userMapper.selectById(userId);
         user.setDeleteTime(new Date());
         return userMapper.updateById(user) == 1;
-        // FIXME: 用户注销后还能登录
     }
 
     @Override
     public void sendCode(String email) throws CommonException {
-        Map<String, Object> map = new HashMap<>();
-        map.put("email", email);
-        if (userMapper.selectByMap(map)
-            .size() != 0) {
-            throw new CommonException(CommonErrorCode.EMAIL_HAS_BEEN_SIGNED_UP);
-        }
         if (redisUtil.isExpire(email)) {
             redisUtil.del(email);
         }
@@ -126,7 +119,6 @@ public class AccountServiceImpl implements AccountService {
         if (redisUtil.isExpire(email)) {
             throw new CommonException(CommonErrorCode.VERIFICATION_CODE_HAS_EXPIRED);
         }
-        return redisUtil.get(email)
-            .equals(code);
+        return redisUtil.get(email).equals(code);
     }
 }

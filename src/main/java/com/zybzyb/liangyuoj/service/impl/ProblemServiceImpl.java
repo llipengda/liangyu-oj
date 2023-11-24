@@ -91,7 +91,7 @@ public class ProblemServiceImpl implements ProblemService {
             .submitTime(new Date())
             .build();
 
-        EvaluateResult res = EvaluateUtil.execute(tryProblemRequest.getCode(), p.getSampleOutput());
+        EvaluateResult res = EvaluateUtil.execute(tryProblemRequest.getCode(),p.getSampleInput(),p.getSampleOutput());
 
         submission.setResult(res.getStatus()
             .toString());

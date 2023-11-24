@@ -20,7 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EvaluateUtil {
 
-    public static EvaluateResult execute(String sourceCode, String expectedOutput) throws Exception {
+    private static final long MEMORY_LIMIT = 256 * 1024 * 1024;
+
+    public static EvaluateResult execute(String sourceCode, String input, String expectedOutput) throws Exception {
         String workDir = ".\\tests\\";
         if (!new File(workDir).exists()) {
             if (new File(workDir).mkdirs()) {
@@ -76,6 +78,7 @@ public class EvaluateUtil {
             ProcessBuilder runBuilder = new ProcessBuilder("java", "-cp", workDir, className);
             long start = System.currentTimeMillis();
             Process run = runBuilder.start();
+            run.outputWriter().write(input);
 
             // 设个计时器，如果超时了，就打印一个超时
             boolean finished = run.waitFor(2, TimeUnit.SECONDS);

@@ -38,7 +38,6 @@ public class UserController {
      * @param updateUserRequest 更新信息
      * @param request           请求
      * @return 更新结果
-     * @throws Exception
      */
     @PutMapping(value = "/update", produces = "application/json")
     public Result<User> update(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest request)
