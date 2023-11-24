@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
+import jakarta.mail.MessagingException;
+
 import com.zybzyb.liangyuoj.common.CommonErrorCode;
 import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.LoginRequest;
@@ -22,9 +22,7 @@ import com.zybzyb.liangyuoj.service.AccountService;
 import com.zybzyb.liangyuoj.util.EmailUtil;
 import com.zybzyb.liangyuoj.util.JWTUtil;
 import com.zybzyb.liangyuoj.util.PasswordUtil;
-import com.zybzyb.liangyuoj.util.RedisUtil;
 
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -33,20 +31,14 @@ public class AccountServiceImpl implements AccountService {
     private UserMapper userMapper;
 
     @Autowired
-    private RedisUtil redisUtil;
-
-    @Value("${spring.mail.username}")
-    private String sender;
-
-    @Autowired
-    JavaMailSender jms;
+    private EmailUtil emailUtil;
 
     @Override
     public void signUp(SignUpRequest signUpRequest) throws CommonException {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("email", signUpRequest.getEmail());
         if (userMapper.selectCount(userQueryWrapper) > 0) {
-            throw new CommonException(CommonErrorCode.EMAIL_ALREADY_EXIST);
+            throw new CommonException(CommonErrorCode.EMAIL_HAS_BEEN_SIGNED_UP);
         }
         User user = User.builder()
             .createTime(new Date())
@@ -101,21 +93,32 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void sendCode(String email) throws CommonException {
+    public void sendVerifyCode(String email) throws CommonException {
         Map<String, Object> map = new HashMap<>();
         map.put("email", email);
         if (userMapper.selectByMap(map)
             .size() != 0) {
             throw new CommonException(CommonErrorCode.EMAIL_HAS_BEEN_SIGNED_UP);
         }
-        if (redisUtil.isExpire(email)) {
-            redisUtil.del(email);
-        }
-        String verificationCode = EmailUtil.getRandomVerifyCode();
-        redisUtil.set(email, verificationCode, 900);
         try {
-            EmailUtil.sendMail(sender, email, verificationCode, jms);
-        } catch (Exception e) {
+            emailUtil.sendVerifyEmail(email);
+        } catch (MessagingException e) {
+            log.error("发送邮件失败", e);
+            throw new CommonException(CommonErrorCode.SEND_EMAIL_FAILED);
+        }
+    }
+
+    @Override
+    public void sendConfirmEmail(String email) throws CommonException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        if (userMapper.selectByMap(map)
+            .size() == 0) {
+            throw new CommonException(CommonErrorCode.USER_NOT_FOUND);
+        }
+        try {
+            emailUtil.sendConfirmEmail(email);
+        } catch (MessagingException e) {
             log.error("发送邮件失败", e);
             throw new CommonException(CommonErrorCode.SEND_EMAIL_FAILED);
         }
@@ -123,10 +126,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Boolean verifyCode(String email, String code) throws CommonException {
-        if (redisUtil.isExpire(email)) {
-            throw new CommonException(CommonErrorCode.VERIFICATION_CODE_HAS_EXPIRED);
-        }
-        return redisUtil.get(email)
-            .equals(code);
+        return emailUtil.verify(email, code);
     }
 }

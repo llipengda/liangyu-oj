@@ -17,7 +17,9 @@ public interface AccountService {
 
     Boolean delete(Long userId);
 
-    void sendCode(String email) throws CommonException;
+    void sendVerifyCode(String email) throws CommonException;
+
+    void sendConfirmEmail(String email) throws CommonException;
 
     Boolean verifyCode(String email, String code) throws CommonException;
 

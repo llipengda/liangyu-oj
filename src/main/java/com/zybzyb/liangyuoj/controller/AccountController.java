@@ -1,6 +1,7 @@
 package com.zybzyb.liangyuoj.controller;
 
 import com.zybzyb.liangyuoj.annotation.NoAuth;
+import com.zybzyb.liangyuoj.common.CommonErrorCode;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.LoginRequest;
@@ -29,7 +30,7 @@ public class AccountController {
      * 
      * @param signUpRequest 注册信息
      * @return 注册结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/signUp", produces = "application/json")
@@ -43,7 +44,7 @@ public class AccountController {
      * 
      * @param loginRequest 登录信息
      * @return 登录结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/login", produces = "application/json")
@@ -58,7 +59,7 @@ public class AccountController {
      * @param newPassword 新密码
      * @param request     请求
      * @return 更新结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @PutMapping(value = "/updatePassword", produces = "application/json")
     public Result<User> updatePassword(String oldPassword, String newPassword, HttpServletRequest request)
@@ -82,13 +83,20 @@ public class AccountController {
      * 发送验证码
      * 
      * @param email 邮箱
+     * @param type  类型 0:注册 1:修改密码
      * @return 发送结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/sendCode", produces = "application/json")
-    public Result<Void> sendCode(String email) throws CommonException {
-        accountService.sendCode(email);
+    public Result<Void> sendCode(String email, Integer type) throws CommonException {
+        if (type == 0) {
+            accountService.sendVerifyCode(email);
+        } else if (type == 1) {
+            accountService.sendConfirmEmail(email);
+        } else {
+            throw new CommonException(CommonErrorCode.PARAMETER_ERROR);
+        }
         return Result.success(null);
     }
 
@@ -98,7 +106,7 @@ public class AccountController {
      * @param email 邮箱
      * @param code  验证码
      * @return 验证结果
-     * @throws CommonException
+     * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/verifyCode", produces = "application/json")
