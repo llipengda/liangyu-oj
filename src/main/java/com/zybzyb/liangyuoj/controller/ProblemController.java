@@ -30,7 +30,7 @@ public class ProblemController {
      * 
      * @param addProblemRequest 题目信息
      * @return 添加结果 1成功 0失败
-     * @throws Exception
+     * @throws Exception 异常
      */
     @PostMapping("/add")
     public Result<Problem> addProblem(@RequestBody AddProblemRequest addProblemRequest) throws Exception {
@@ -64,7 +64,7 @@ public class ProblemController {
      * 
      * @param updateProblemRequest 题目信息
      * @return 更新结果
-     * @throws Exception
+     * @throws Exception 异常
      */
     @PutMapping("/update")
     public Result<Problem> updateProblem(@RequestBody UpdateProblemRequest updateProblemRequest) throws Exception {
@@ -88,7 +88,7 @@ public class ProblemController {
      * @param tryProblemRequest 尝试信息
      * @param request           请求
      * @return 尝试结果
-     * @throws Exception
+     * @throws Exception 异常
      */
     @PostMapping("/try")
     public Result<EvaluateResult> tryProblem(@RequestBody TryProblemRequest tryProblemRequest,

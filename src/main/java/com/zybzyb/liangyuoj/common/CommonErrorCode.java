@@ -13,7 +13,7 @@ public enum CommonErrorCode {
     UNKNOWN_ERROR(400, "未知错误"),
     INTERNAL_SERVER_ERROR(500, "服务器内部错误"),
     PARAMETER_ERROR(4001, "参数错误"),
-    EMAIL_ALREADY_EXIST(4002, "邮箱已存在"),
+    USER_NOT_FOUND(4002, "用户不存在"),
     TOKEN_ERROR(4003, "token 校验失败,"),
     DATA_ERROR(4004, "邮箱或密码错误"),
     SQL_ERROR(4005, "SQL 错误"),

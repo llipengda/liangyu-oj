@@ -1,6 +1,7 @@
 package com.zybzyb.liangyuoj.controller;
 
 import com.zybzyb.liangyuoj.annotation.NoAuth;
+import com.zybzyb.liangyuoj.common.CommonErrorCode;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.LoginRequest;
@@ -81,13 +82,20 @@ public class AccountController {
      * 发送验证码
      * 
      * @param email 邮箱
+     * @param type  类型 0:注册 1:修改密码
      * @return 发送结果
      * @throws CommonException 通用异常
      */
     @NoAuth
     @PostMapping(value = "/sendCode", produces = "application/json")
-    public Result<Void> sendCode(String email) throws CommonException {
-        accountService.sendCode(email);
+    public Result<Void> sendCode(String email, Integer type) throws CommonException {
+        if (type == 0) {
+            accountService.sendVerifyCode(email);
+        } else if (type == 1) {
+            accountService.sendConfirmEmail(email);
+        } else {
+            throw new CommonException(CommonErrorCode.PARAMETER_ERROR);
+        }
         return Result.success(null);
     }
 
