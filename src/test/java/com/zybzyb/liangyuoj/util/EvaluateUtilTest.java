@@ -6,7 +6,12 @@ import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,7 +73,57 @@ class EvaluateUtilTest {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println(scanner.nextLine());
+        String javaCode = """
+                public class MyClass {
+                    public static void main(String[] args) {
+                        System.out.println("Hello, World!");
+                        System.out.println("Hello, World!");
+                        System.out.println("Hello, World!");
+                        System.out.println("Hello, World!");
+                        // Main method content
+                        System.out.println("Hello, World!");
+                    }
+                }""";
+
+        Pattern pattern = Pattern.compile("public static void main\\s*\\([^)]*\\)\\s*\\{(?:[^}]*\\}\\s*)+([^}]*\\})\\s*$", Pattern.MULTILINE | Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(javaCode);
+
+        if (matcher.find()) {
+            String lastLineOfMain = matcher.group(1);
+            System.out.println("Last Line of Main Method:\n" + lastLineOfMain);
+        } else {
+            System.out.println("Main method not found");
+        }
     }
 }
+
+class MemoryUsageExample {
+    public static void main(String[] args) {
+        String javaCode = """
+                public class MyClass {
+                    public static void main(String[] args) {
+                        // Main method content
+                        System.out.println("Hello, World!");
+                    }
+                }""";
+
+        Pattern pattern = Pattern.compile("(public static void main\\s*\\([^)]*\\)\\s*\\{(?:[^}]*\\}\\s*)+)([^}]*\\})\\s*$", Pattern.MULTILINE | Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(javaCode);
+
+        if (matcher.find()) {
+            // 获取匹配到的最后一行
+            String lastLineOfMain = matcher.group(2);
+
+            // 添加新语句
+            String newStatement = "        System.out.println(\"New Statement!\");\n";
+
+            // 替换最后一行
+            String updatedJavaCode = javaCode.replace(lastLineOfMain, lastLineOfMain + newStatement);
+
+            System.out.println("Updated Java Code:\n" + updatedJavaCode);
+        } else {
+            System.out.println("Main method not found");
+        }
+    }
+}
+
