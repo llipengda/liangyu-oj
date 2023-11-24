@@ -86,7 +86,7 @@ public class AccountController {
      * @throws CommonException
      */
     @NoAuth
-    @GetMapping(value = "/sendCode", produces = "application/json")
+    @PostMapping(value = "/sendCode", produces = "application/json")
     public Result<Void> sendCode(String email) throws CommonException {
         accountService.sendCode(email);
         return Result.success(null);
@@ -101,7 +101,7 @@ public class AccountController {
      * @throws CommonException
      */
     @NoAuth
-    @GetMapping(value = "/verifyCode", produces = "application/json")
+    @PostMapping(value = "/verifyCode", produces = "application/json")
     public Result<Boolean> verifyCode(String email, String code) throws CommonException {
         return Result.success(accountService.verifyCode(email, code));
     }
