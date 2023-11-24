@@ -78,4 +78,32 @@ public class AccountController {
         return Result.success(accountService.delete(userId));
     }
 
+    /**
+     * 发送验证码
+     * 
+     * @param email 邮箱
+     * @return 发送结果
+     * @throws CommonException
+     */
+    @NoAuth
+    @PostMapping(value = "/sendCode", produces = "application/json")
+    public Result<Void> sendCode(String email) throws CommonException {
+        accountService.sendCode(email);
+        return Result.success(null);
+    }
+
+    /**
+     * 验证验证码
+     * 
+     * @param email 邮箱
+     * @param code  验证码
+     * @return 验证结果
+     * @throws CommonException
+     */
+    @NoAuth
+    @PostMapping(value = "/verifyCode", produces = "application/json")
+    public Result<Boolean> verifyCode(String email, String code) throws CommonException {
+        return Result.success(accountService.verifyCode(email, code));
+    }
+
 }

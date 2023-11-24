@@ -1,9 +1,13 @@
 package com.zybzyb.liangyuoj.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,13 +19,27 @@ import com.zybzyb.liangyuoj.controller.response.LoginResponse;
 import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
 import com.zybzyb.liangyuoj.service.AccountService;
+import com.zybzyb.liangyuoj.util.EmailUtil;
 import com.zybzyb.liangyuoj.util.JWTUtil;
 import com.zybzyb.liangyuoj.util.PasswordUtil;
+import com.zybzyb.liangyuoj.util.RedisUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class AccountServiceImpl implements AccountService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Value("${spring.mail.username}")
+    private String sender;
+
+    @Autowired
+    JavaMailSender jms;
 
     @Override
     public void signUp(SignUpRequest signUpRequest) throws CommonException {
@@ -75,10 +93,40 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean delete(Long userId) {
+    public Boolean delete(Long userId) {
         User user = userMapper.selectById(userId);
         user.setDeleteTime(new Date());
         return userMapper.updateById(user) == 1;
         // FIXME: 用户注销后还能登录
+    }
+
+    @Override
+    public void sendCode(String email) throws CommonException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        if (userMapper.selectByMap(map)
+            .size() != 0) {
+            throw new CommonException(CommonErrorCode.EMAIL_HAS_BEEN_SIGNED_UP);
+        }
+        if (redisUtil.isExpire(email)) {
+            redisUtil.del(email);
+        }
+        String verificationCode = EmailUtil.getRandomVerifyCode();
+        redisUtil.set(email, verificationCode, 900);
+        try {
+            EmailUtil.sendMail(sender, email, verificationCode, jms);
+        } catch (Exception e) {
+            log.error("发送邮件失败", e);
+            throw new CommonException(CommonErrorCode.SEND_EMAIL_FAILED);
+        }
+    }
+
+    @Override
+    public Boolean verifyCode(String email, String code) throws CommonException {
+        if (redisUtil.isExpire(email)) {
+            throw new CommonException(CommonErrorCode.VERIFICATION_CODE_HAS_EXPIRED);
+        }
+        return redisUtil.get(email)
+            .equals(code);
     }
 }
