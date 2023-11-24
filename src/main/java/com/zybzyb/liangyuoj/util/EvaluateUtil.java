@@ -74,11 +74,21 @@ public class EvaluateUtil {
                 return new EvaluateResult(EvaluateStatus.CE, errors, null);
             }
 
+            if(StringUtil.notBlank(input)){
+                Files.write(Paths.get(workDir + "input.txt"), input.getBytes());
+            }
+
             // 运行.class文件
-            ProcessBuilder runBuilder = new ProcessBuilder("java", "-cp", workDir, className);
+            ProcessBuilder runBuilder = new ProcessBuilder("java",
+                    "-cp",
+                    workDir,
+                    className,
+                    "<",
+                    workDir + "input.txt"
+            );
+            System.out.println(runBuilder.command());
             long start = System.currentTimeMillis();
             Process run = runBuilder.start();
-            run.outputWriter().write(input);
 
             // 设个计时器，如果超时了，就打印一个超时
             boolean finished = run.waitFor(2, TimeUnit.SECONDS);
