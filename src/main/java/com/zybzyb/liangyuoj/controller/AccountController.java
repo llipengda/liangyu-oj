@@ -70,7 +70,6 @@ public class AccountController {
 
     /**
      * 用户注销
-     * 
      * @return 更新结果
      */
     @DeleteMapping(value = "/delete", produces = "application/json")
