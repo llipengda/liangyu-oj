@@ -91,7 +91,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void sendVerifyCode(String email) throws CommonException {
+    public Boolean sendVerifyCode(String email) throws CommonException {
         Map<String, Object> map = new HashMap<>();
         map.put("email", email);
         if (userMapper.selectByMap(map)
@@ -100,6 +100,7 @@ public class AccountServiceImpl implements AccountService {
         }
         try {
             emailUtil.sendVerifyEmail(email);
+            return true;
         } catch (MessagingException e) {
             log.error("发送邮件失败", e);
             throw new CommonException(CommonErrorCode.SEND_EMAIL_FAILED);
@@ -107,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void sendConfirmEmail(String email) throws CommonException {
+    public Boolean sendConfirmEmail(String email) throws CommonException {
         Map<String, Object> map = new HashMap<>();
         map.put("email", email);
         if (userMapper.selectByMap(map)
@@ -116,6 +117,7 @@ public class AccountServiceImpl implements AccountService {
         }
         try {
             emailUtil.sendConfirmEmail(email);
+            return true;
         } catch (MessagingException e) {
             log.error("发送邮件失败", e);
             throw new CommonException(CommonErrorCode.SEND_EMAIL_FAILED);

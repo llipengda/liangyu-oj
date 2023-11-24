@@ -88,15 +88,14 @@ public class AccountController {
      */
     @NoAuth
     @PostMapping(value = "/sendCode", produces = "application/json")
-    public Result<Void> sendCode(String email, Integer type) throws CommonException {
+    public Result<Boolean> sendCode(String email, Integer type) throws CommonException {
         if (type == 0) {
-            accountService.sendVerifyCode(email);
+            return Result.success(accountService.sendVerifyCode(email));
         } else if (type == 1) {
-            accountService.sendConfirmEmail(email);
+            return Result.success(accountService.sendConfirmEmail(email));
         } else {
             throw new CommonException(CommonErrorCode.PARAMETER_ERROR);
         }
-        return Result.success(null);
     }
 
     /**
