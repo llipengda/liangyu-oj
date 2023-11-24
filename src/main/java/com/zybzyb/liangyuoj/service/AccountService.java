@@ -15,6 +15,10 @@ public interface AccountService {
 
     User updatePassword(String oldPassword, String newPassword, Long userId) throws CommonException;
 
-    boolean delete(Long userId);
+    Boolean delete(Long userId);
+
+    void sendCode(String email) throws CommonException;
+
+    Boolean verifyCode(String email, String code) throws CommonException;
 
 }
