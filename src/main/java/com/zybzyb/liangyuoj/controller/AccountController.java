@@ -55,16 +55,16 @@ public class AccountController {
     /**
      * 用户更新密码
      * 
+     * @param email       邮箱
      * @param newPassword 新密码
-     * @param request     请求
      * @return 更新结果
      * @throws CommonException 通用异常
      */
+    @NoAuth
     @PutMapping(value = "/updatePassword", produces = "application/json")
-    public Result<User> updatePassword(String newPassword, HttpServletRequest request)
+    public Result<User> updatePassword(String email, String newPassword)
         throws CommonException {
-        Long userId = JWTUtil.getUserIdFromRequest(request);
-        return Result.success(accountService.updatePassword(newPassword, userId));
+        return Result.success(accountService.updatePassword(email, newPassword));
     }
 
     /**

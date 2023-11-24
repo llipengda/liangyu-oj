@@ -72,8 +72,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User updatePassword(String newPassword, Long userId) throws CommonException {
-        User user = userMapper.selectById(userId);
+    public User updatePassword(String email, String newPassword) throws CommonException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        User user = userMapper.selectByMap(map)
+            .get(0);
+        if (user == null) {
+            throw new CommonException(CommonErrorCode.USER_NOT_FOUND);
+        }
         if (PasswordUtil.checkPassword(newPassword, user.getPassword())) {
             throw new CommonException(CommonErrorCode.PASSWORD_SAME);
         }
