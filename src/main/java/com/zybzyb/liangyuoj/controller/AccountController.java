@@ -113,4 +113,30 @@ public class AccountController {
         return Result.success(accountService.verifyCode(email, code));
     }
 
+    /**
+     * 检查用户名是否可用
+     * 
+     * @param name 用户名
+     * @return 检查结果
+     * @throws CommonException 通用异常
+     */
+    @NoAuth
+    @PostMapping(value = "/checkName", produces = "application/json")
+    public Result<Boolean> checkName(String name) throws CommonException {
+        return Result.success(accountService.checkName(name));
+    }
+
+    /**
+     * 检查邮箱是否可用
+     * 
+     * @param email 邮箱
+     * @return 检查结果
+     * @throws CommonException 通用异常
+     */
+    @NoAuth
+    @PostMapping(value = "/checkEmail", produces = "application/json")
+    public Result<Boolean> checkEmail(String email) throws CommonException {
+        return Result.success(accountService.checkEmail(email));
+    }
+
 }

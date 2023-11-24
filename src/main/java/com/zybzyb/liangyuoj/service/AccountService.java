@@ -23,4 +23,8 @@ public interface AccountService {
 
     Boolean verifyCode(String email, String code) throws CommonException;
 
+    Boolean checkName(String name) throws CommonException;
+
+    Boolean checkEmail(String email) throws CommonException;
+
 }

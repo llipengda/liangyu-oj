@@ -44,8 +44,7 @@ public class AccountServiceImpl implements AccountService {
             .email(signUpRequest.getEmail())
             .type(2)
             .password(PasswordUtil.hashPassword(signUpRequest.getPassword()))
-            .nickname("用户" + signUpRequest.getEmail()
-                .replaceAll("@.*", ""))
+            .nickname(signUpRequest.getNickname())
             .submitted(0)
             .solved(0)
             .build();
@@ -126,5 +125,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Boolean verifyCode(String email, String code) throws CommonException {
         return emailUtil.verify(email, code);
+    }
+
+    @Override
+    public Boolean checkName(String name) throws CommonException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("nickname", name);
+        return userMapper.selectByMap(map)
+            .size() == 0;
+    }
+
+    @Override
+    public Boolean checkEmail(String email) throws CommonException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        return userMapper.selectByMap(map)
+            .size() == 0;
     }
 }
