@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class RegexUtil {
     public static String getClassName(String code) {
-        Matcher matcher = Pattern.compile("public\\s+class\\s+(\\w+)\\s*(<.*>)?\\s*\\{")
+        Matcher matcher = Pattern.compile("public\\s+class\\s+(\\w+)\\s*(<.*>)?")
             .matcher(code);
         List<String> res = new ArrayList<>();
         while (matcher.find()) {
