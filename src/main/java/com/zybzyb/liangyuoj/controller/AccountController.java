@@ -55,21 +55,21 @@ public class AccountController {
     /**
      * 用户更新密码
      * 
-     * @param oldPassword 旧密码
      * @param newPassword 新密码
      * @param request     请求
      * @return 更新结果
      * @throws CommonException 通用异常
      */
     @PutMapping(value = "/updatePassword", produces = "application/json")
-    public Result<User> updatePassword(String oldPassword, String newPassword, HttpServletRequest request)
+    public Result<User> updatePassword(String newPassword, HttpServletRequest request)
         throws CommonException {
         Long userId = JWTUtil.getUserIdFromRequest(request);
-        return Result.success(accountService.updatePassword(oldPassword, newPassword, userId));
+        return Result.success(accountService.updatePassword(newPassword, userId));
     }
 
     /**
      * 用户注销
+     * 
      * @return 更新结果
      */
     @DeleteMapping(value = "/delete", produces = "application/json")

@@ -3,7 +3,6 @@ package com.zybzyb.liangyuoj.service.impl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,8 @@ public class AccountServiceImpl implements AccountService {
         String password = loginRequest.getPassword();
 
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("email", email).isNull("delete_time");
+        userQueryWrapper.eq("email", email)
+            .isNull("delete_time");
 
         User user = userMapper.selectOne(userQueryWrapper);
         if (!PasswordUtil.checkPassword(password, user.getPassword())) {
@@ -73,9 +73,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User updatePassword(String oldPassword, String newPassword, Long userId) throws CommonException {
+    public User updatePassword(String newPassword, Long userId) throws CommonException {
         User user = userMapper.selectById(userId);
-        if (!Objects.equals(user.getPassword(), PasswordUtil.hashPassword(oldPassword))) {
+        if (PasswordUtil.checkPassword(newPassword, user.getPassword())) {
             throw new CommonException(CommonErrorCode.PASSWORD_SAME);
         }
         user.setPassword(PasswordUtil.hashPassword(newPassword));

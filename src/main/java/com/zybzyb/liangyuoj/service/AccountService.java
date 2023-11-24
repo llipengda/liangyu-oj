@@ -13,7 +13,7 @@ public interface AccountService {
 
     LoginResponse login(LoginRequest loginRequest) throws CommonException;
 
-    User updatePassword(String oldPassword, String newPassword, Long userId) throws CommonException;
+    User updatePassword(String newPassword, Long userId) throws CommonException;
 
     Boolean delete(Long userId);
 
