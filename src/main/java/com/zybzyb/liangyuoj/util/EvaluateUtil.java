@@ -131,7 +131,7 @@ public class EvaluateUtil {
             if (new File(javaFileName.replace(".java", "") + ".class").exists()) {
                 log.info("delete .class :" + new File(javaFileName.replace(".java", "") + ".class").delete());
             }
-            if(new File(workDir + "input.txt").exists()){
+            if (new File(workDir + "input.txt").exists()){
                 log.info("delete input.txt :" + new File(workDir + "input.txt").delete());
             }
         }
