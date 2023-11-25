@@ -20,15 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EvaluateUtil {
 
-    private static final long MEMORY_LIMIT = 256 * 1024 * 1024;
-
     public static EvaluateResult execute(String sourceCode, String input, String expectedOutput) throws Exception {
         String workDir = ".\\tests\\";
         if (!new File(workDir).exists()) {
             if (new File(workDir).mkdirs()) {
-                System.out.println("create work directory success");
+                log.info("create work directory success");
             } else {
-                System.out.println("create work directory failed");
+                log.error("create work directory failed");
             }
         }
 
@@ -83,8 +81,12 @@ public class EvaluateUtil {
             System.out.println(runBuilder.command());
             long start = System.currentTimeMillis();
             Process run = runBuilder.start();
-            run.outputWriter().write(input);
-            run.outputWriter().close();
+            
+            // 输入
+            OutputStream stdin = run.getOutputStream();
+            stdin.write(input.getBytes());
+            stdin.flush();
+            stdin.close();
 
             // 设个计时器，如果超时了，就打印一个超时
             boolean finished = run.waitFor(2, TimeUnit.SECONDS);

@@ -3,7 +3,6 @@ package com.zybzyb.liangyuoj.service.impl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +44,7 @@ public class AccountServiceImpl implements AccountService {
             .email(signUpRequest.getEmail())
             .type(2)
             .password(PasswordUtil.hashPassword(signUpRequest.getPassword()))
-            .nickname("用户" + signUpRequest.getEmail()
-                .replaceAll("@.*", ""))
+            .nickname(signUpRequest.getNickname())
             .submitted(0)
             .solved(0)
             .build();
@@ -59,7 +57,8 @@ public class AccountServiceImpl implements AccountService {
         String password = loginRequest.getPassword();
 
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("email", email).isNull("delete_time");
+        userQueryWrapper.eq("email", email)
+            .isNull("delete_time");
 
         User user = userMapper.selectOne(userQueryWrapper);
         if (!PasswordUtil.checkPassword(password, user.getPassword())) {
@@ -73,9 +72,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User updatePassword(String oldPassword, String newPassword, Long userId) throws CommonException {
-        User user = userMapper.selectById(userId);
-        if (!Objects.equals(user.getPassword(), PasswordUtil.hashPassword(oldPassword))) {
+    public User updatePassword(String email, String newPassword) throws CommonException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        User user = userMapper.selectByMap(map)
+            .get(0);
+        if (user == null) {
+            throw new CommonException(CommonErrorCode.USER_NOT_FOUND);
+        }
+        if (PasswordUtil.checkPassword(newPassword, user.getPassword())) {
             throw new CommonException(CommonErrorCode.PASSWORD_SAME);
         }
         user.setPassword(PasswordUtil.hashPassword(newPassword));
@@ -92,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void sendVerifyCode(String email) throws CommonException {
+    public Boolean sendVerifyCode(String email) throws CommonException {
         Map<String, Object> map = new HashMap<>();
         map.put("email", email);
         if (userMapper.selectByMap(map)
@@ -101,6 +106,7 @@ public class AccountServiceImpl implements AccountService {
         }
         try {
             emailUtil.sendVerifyEmail(email);
+            return true;
         } catch (MessagingException e) {
             log.error("发送邮件失败", e);
             throw new CommonException(CommonErrorCode.SEND_EMAIL_FAILED);
@@ -108,7 +114,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void sendConfirmEmail(String email) throws CommonException {
+    public Boolean sendConfirmEmail(String email) throws CommonException {
         Map<String, Object> map = new HashMap<>();
         map.put("email", email);
         if (userMapper.selectByMap(map)
@@ -117,6 +123,7 @@ public class AccountServiceImpl implements AccountService {
         }
         try {
             emailUtil.sendConfirmEmail(email);
+            return true;
         } catch (MessagingException e) {
             log.error("发送邮件失败", e);
             throw new CommonException(CommonErrorCode.SEND_EMAIL_FAILED);
@@ -126,5 +133,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Boolean verifyCode(String email, String code) throws CommonException {
         return emailUtil.verify(email, code);
+    }
+
+    @Override
+    public Boolean checkName(String name) throws CommonException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("nickname", name);
+        return userMapper.selectByMap(map)
+            .size() == 0;
+    }
+
+    @Override
+    public Boolean checkEmail(String email) throws CommonException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        return userMapper.selectByMap(map)
+            .size() == 0;
     }
 }

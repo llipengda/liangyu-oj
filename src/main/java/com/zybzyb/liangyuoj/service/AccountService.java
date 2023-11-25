@@ -13,14 +13,18 @@ public interface AccountService {
 
     LoginResponse login(LoginRequest loginRequest) throws CommonException;
 
-    User updatePassword(String oldPassword, String newPassword, Long userId) throws CommonException;
+    User updatePassword(String email, String newPassword) throws CommonException;
 
     Boolean delete(Long userId);
 
-    void sendVerifyCode(String email) throws CommonException;
+    Boolean sendVerifyCode(String email) throws CommonException;
 
-    void sendConfirmEmail(String email) throws CommonException;
+    Boolean sendConfirmEmail(String email) throws CommonException;
 
     Boolean verifyCode(String email, String code) throws CommonException;
+
+    Boolean checkName(String name) throws CommonException;
+
+    Boolean checkEmail(String email) throws CommonException;
 
 }
