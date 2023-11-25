@@ -3,7 +3,6 @@ package com.zybzyb.liangyuoj.util;
 import org.junit.jupiter.api.Test;
 
 import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class EvaluateUtilTest {
@@ -65,3 +64,4 @@ class EvaluateUtilTest {
         assertEquals(EvaluateStatus.AC, res.getStatus());
     }
 }
+

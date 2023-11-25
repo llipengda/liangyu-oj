@@ -73,7 +73,12 @@ public class EvaluateUtil {
             }
 
             // 运行.class文件
-            ProcessBuilder runBuilder = new ProcessBuilder("java", "-cp", workDir, className);
+            ProcessBuilder runBuilder = new ProcessBuilder("java",
+                    "-cp",
+                    workDir,
+                    className
+            );
+            System.out.println(runBuilder.command());
             long start = System.currentTimeMillis();
             Process run = runBuilder.start();
             
