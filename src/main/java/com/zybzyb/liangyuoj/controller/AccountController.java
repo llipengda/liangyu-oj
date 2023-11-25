@@ -55,21 +55,21 @@ public class AccountController {
     /**
      * 用户更新密码
      * 
-     * @param oldPassword 旧密码
+     * @param email       邮箱
      * @param newPassword 新密码
-     * @param request     请求
      * @return 更新结果
      * @throws CommonException 通用异常
      */
+    @NoAuth
     @PutMapping(value = "/updatePassword", produces = "application/json")
-    public Result<User> updatePassword(String oldPassword, String newPassword, HttpServletRequest request)
+    public Result<User> updatePassword(String email, String newPassword)
         throws CommonException {
-        Long userId = JWTUtil.getUserIdFromRequest(request);
-        return Result.success(accountService.updatePassword(oldPassword, newPassword, userId));
+        return Result.success(accountService.updatePassword(email, newPassword));
     }
 
     /**
      * 用户注销
+     * 
      * @return 更新结果
      */
     @DeleteMapping(value = "/delete", produces = "application/json")
@@ -88,15 +88,14 @@ public class AccountController {
      */
     @NoAuth
     @PostMapping(value = "/sendCode", produces = "application/json")
-    public Result<Void> sendCode(String email, Integer type) throws CommonException {
+    public Result<Boolean> sendCode(String email, Integer type) throws CommonException {
         if (type == 0) {
-            accountService.sendVerifyCode(email);
+            return Result.success(accountService.sendVerifyCode(email));
         } else if (type == 1) {
-            accountService.sendConfirmEmail(email);
+            return Result.success(accountService.sendConfirmEmail(email));
         } else {
             throw new CommonException(CommonErrorCode.PARAMETER_ERROR);
         }
-        return Result.success(null);
     }
 
     /**
@@ -111,6 +110,32 @@ public class AccountController {
     @PostMapping(value = "/verifyCode", produces = "application/json")
     public Result<Boolean> verifyCode(String email, String code) throws CommonException {
         return Result.success(accountService.verifyCode(email, code));
+    }
+
+    /**
+     * 检查用户名是否可用
+     * 
+     * @param name 用户名
+     * @return 检查结果
+     * @throws CommonException 通用异常
+     */
+    @NoAuth
+    @PostMapping(value = "/checkName", produces = "application/json")
+    public Result<Boolean> checkName(String name) throws CommonException {
+        return Result.success(accountService.checkName(name));
+    }
+
+    /**
+     * 检查邮箱是否可用
+     * 
+     * @param email 邮箱
+     * @return 检查结果
+     * @throws CommonException 通用异常
+     */
+    @NoAuth
+    @PostMapping(value = "/checkEmail", produces = "application/json")
+    public Result<Boolean> checkEmail(String email) throws CommonException {
+        return Result.success(accountService.checkEmail(email));
     }
 
 }

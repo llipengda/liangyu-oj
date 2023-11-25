@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 public class SignUpRequest {
 
     /**
+     * 用户名
+     */
+    private String nickname;
+
+    /**
      * 邮箱
      */
     private String email;
