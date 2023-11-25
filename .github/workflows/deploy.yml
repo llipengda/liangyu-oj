@@ -2,13 +2,11 @@ name: Auto Deploy
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
  
 jobs:
   compile:
     runs-on: ubuntu-latest
-    name: Running Java 
+    name: Auto Deploy
     steps:
     - uses: actions/checkout@master
     - name: Set up JDK 17
