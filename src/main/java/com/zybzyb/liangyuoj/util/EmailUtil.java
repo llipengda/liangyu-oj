@@ -32,7 +32,7 @@ public class EmailUtil {
             <!DOCTYPE html>
             <html>
               <head>
-                <title>验证码邮件</title>
+                <title>「LYOJ」请查收您的验证码</title>
               </head>
               <body style="font-family: Arial; color: #333333">
                 <div
@@ -131,10 +131,8 @@ public class EmailUtil {
         helper.setTo(email);
 
         // 发送的标题
-        helper.setSubject("「LYOJ」验证码");
-        String msg;
-
-        msg = signUp(email, verificationCode);
+        helper.setSubject("「LYOJ」请查收您的验证码");
+        String msg = signUp(email, verificationCode);
         helper.setText(msg, true);
 
         // 发送邮件
@@ -161,10 +159,8 @@ public class EmailUtil {
         helper.setTo(email);
 
         // 发送的标题
-        helper.setSubject("「LYOJ」验证码");
-        String msg;
-
-        msg = confirm(email, verificationCode);
+        helper.setSubject("「LYOJ」请查收您的验证码");
+        String msg = confirm(email, verificationCode);
         helper.setText(msg, true);
 
         // 发送邮件

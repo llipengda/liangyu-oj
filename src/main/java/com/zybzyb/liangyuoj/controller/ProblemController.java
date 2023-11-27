@@ -110,5 +110,15 @@ public class ProblemController {
         return Result.success(problemService.getSubmissionList(problemId, page, pageSize));
     }
 
+    /**
+     * 获取章节列表
+     * @return 章节列表
+     */
+    @GetMapping("/getChapterList")
+    public Result<List<Integer>> getChapterList() {
+        return Result.success(problemService.getChapterList());
+    }
+
+
 
 }

@@ -20,6 +20,5 @@ public class RootController {
     @GetMapping("/")
     public void root(HttpServletResponse response) throws IOException {
         response.sendRedirect("/swagger-ui/index.html");
-        return;
     }
 }

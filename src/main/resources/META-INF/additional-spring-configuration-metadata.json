@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "path.web",
+    "type": "java.lang.String",
+    "description": "访问静态资源的网络路径"
+  },
+  {
+    "name": "path.local",
+    "type": "java.lang.String",
+    "description": "存储静态资源的本地路径"
+  }
+]}
