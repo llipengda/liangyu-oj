@@ -18,6 +18,7 @@ import com.zybzyb.liangyuoj.controller.response.LoginResponse;
 import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
 import com.zybzyb.liangyuoj.service.AccountService;
+import com.zybzyb.liangyuoj.util.AssertUtil;
 import com.zybzyb.liangyuoj.util.EmailUtil;
 import com.zybzyb.liangyuoj.util.JWTUtil;
 import com.zybzyb.liangyuoj.util.PasswordUtil;
@@ -61,6 +62,7 @@ public class AccountServiceImpl implements AccountService {
             .isNull("delete_time");
 
         User user = userMapper.selectOne(userQueryWrapper);
+        AssertUtil.notNull(user, CommonErrorCode.USER_NOT_FOUND);
         if (!PasswordUtil.checkPassword(password, user.getPassword())) {
             throw new CommonException(CommonErrorCode.DATA_ERROR);
         }

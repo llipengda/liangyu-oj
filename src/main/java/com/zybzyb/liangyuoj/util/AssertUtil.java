@@ -17,9 +17,10 @@ import java.util.Objects;
 public class AssertUtil {
     public static void isTrue(boolean expValue, CommonErrorCode resultCode, Object obj) throws CommonException {
         if (!expValue) {
-            if (obj instanceof String) {
-                throw new CommonException(resultCode, obj.toString());
+            if (obj == null) {
+                throw new CommonException(resultCode);
             }
+            throw new CommonException(resultCode, obj.toString());
         }
     }
 
