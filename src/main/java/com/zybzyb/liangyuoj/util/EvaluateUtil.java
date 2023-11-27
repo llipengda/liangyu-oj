@@ -74,14 +74,14 @@ public class EvaluateUtil {
 
             // 运行.class文件
             ProcessBuilder runBuilder = new ProcessBuilder("java",
-                    "-cp",
-                    workDir,
-                    className
+                "-cp",
+                workDir,
+                className
             );
             System.out.println(runBuilder.command());
             long start = System.currentTimeMillis();
             Process run = runBuilder.start();
-            
+
             // 输入
             OutputStream stdin = run.getOutputStream();
             stdin.write(input.getBytes());
@@ -106,7 +106,17 @@ public class EvaluateUtil {
                     log.info("Wrong Answer.");
                     log.info("Expected Output: \n" + expectedOutput);
                     log.info("Program Output: \n" + output);
-                    return new EvaluateResult(EvaluateStatus.WA, output, time / 1000.0);
+                    return new EvaluateResult(
+                        EvaluateStatus.WA,
+                        """
+                            预期错误：
+                            期望输出：
+                            %s
+                            实际输出：
+                            %s
+                            """.formatted(expectedOutput, output),
+                        time / 1000.0
+                    );
                 }
             } else if (!finished) {
                 log.info("Time Limit Exceeded.");
