@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.zybzyb.liangyuoj.common.CommonErrorCode;
+import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.UpdateUserRequest;
 import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
 import com.zybzyb.liangyuoj.service.UserService;
+import com.zybzyb.liangyuoj.util.AssertUtil;
 import com.zybzyb.liangyuoj.util.ReflectUtil;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,11 +55,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String uploadImage(MultipartFile file) throws Exception {
+        String fileName = file.getOriginalFilename();
+        AssertUtil.notBlank(fileName, CommonErrorCode.FILE_NAME_EMPTY, null);
+        if (fileName == null) {
+            return null;
+        }
+        String extension;
+        if (fileName.endsWith(".jpg")) {
+            extension = ".jpg";
+        } else if (fileName.endsWith(".png")) {
+            extension = ".png";
+        } else if (fileName.endsWith(".jpeg")) {
+            extension = ".jpeg";
+        } else if (fileName.endsWith(".gif")) {
+            extension = ".gif";
+        } else if (fileName.endsWith(".bmp")) {
+            extension = ".bmp";
+        } else if (fileName.endsWith(".webp")) {
+            extension = ".webp";
+        } else if (fileName.endsWith(".ico")) {
+            extension = ".ico";
+        } else if (fileName.endsWith(".tif")) {
+            extension = ".tif";
+        } else if (fileName.endsWith(".tiff")) {
+            extension = ".tiff";
+        } else if (fileName.endsWith(".svg")) {
+            extension = ".svg";
+        } else {
+            throw new CommonException(CommonErrorCode.NOT_A_PICTURE);
+        }
         String flag = UUID.randomUUID()
             .toString();
-        String rootFilePath = local + flag;
+        String rootFilePath = local + flag + extension;
         Files.write(Path.of(rootFilePath), file.getBytes());
-        return web + flag;
+        return web + flag + extension;
     }
 
     @Override

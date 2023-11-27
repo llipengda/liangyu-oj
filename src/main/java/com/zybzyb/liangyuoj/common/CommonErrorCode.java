@@ -20,7 +20,9 @@ public enum CommonErrorCode {
     PASSWORD_SAME(4006, "新旧密码相同"),
     EMAIL_HAS_BEEN_SIGNED_UP(4007, "邮箱已被注册"),
     SEND_EMAIL_FAILED(4008, "发送邮件失败"),
-    VERIFICATION_CODE_HAS_EXPIRED(4009, "验证码已过期");
+    VERIFICATION_CODE_HAS_EXPIRED(4009, "验证码已过期"),
+    FILE_NAME_EMPTY(4010, "文件名为空"),
+    NOT_A_PICTURE(4011, "该文件不是图片");
 
     /**
      * 错误码
