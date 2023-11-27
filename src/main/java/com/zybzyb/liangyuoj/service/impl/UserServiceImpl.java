@@ -50,19 +50,13 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     public String uploadImage(MultipartFile file) throws Exception {
-        String original = file.getOriginalFilename();
-        if (original == null) {
-            original = "";
-        } else {
-            original = original.replaceAll("\\.", "")
-                .replaceAll("/", "");
-        }
         String flag = UUID.randomUUID()
             .toString();
-        String rootFilePath = local + flag + "-" + original;
+        String rootFilePath = local + flag;
         Files.write(Path.of(rootFilePath), file.getBytes());
-        return web + flag + "-" + original;
+        return web + flag;
     }
 
     @Override
@@ -73,7 +67,5 @@ public class UserServiceImpl implements UserService {
         return submissionMapper.selectPage(new Page<>(1, 10), submissionQueryWrapper)
             .getRecords();
     }
-
-
 }
 
