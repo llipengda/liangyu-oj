@@ -43,10 +43,10 @@ public class EmailUtil {
                     padding: 20px;
                   "
                 >
-                  <h2 style="color: #b70031">您好，<span style="font-size: 16px;">%s</span></h2>
+                  <h2 style="color: #a0c8a5">您好，<span style="font-size: 16px;">%s</span></h2>
                   <p>
                     您于 %s 尝试验证此邮箱地址，验证码为：
-                    <span style="font-size: 24px; color: #b70031; font-weight: 700">%s</span>
+                    <span style="font-size: 24px; color: #a0c8a5; font-weight: 700">%s</span>
                   </p>
                   <p>请输入此验证码完成操作，验证码15分钟内有效。</p>
                   <p style="font-size: 14px; color: #888888; margin-top: 20px">
@@ -77,10 +77,10 @@ public class EmailUtil {
                     padding: 20px;
                   "
                 >
-                  <h2 style="color: #b70031">您好，<span style="font-size: 16px;">%s</span></h2>
+                  <h2 style="color: #a0c8a5">您好，<span style="font-size: 16px;">%s</span></h2>
                   <p>
                     您于 %s 尝试修改密码，验证码为：
-                    <span style="font-size: 24px; color: #b70031; font-weight: 700">%s</span>
+                    <span style="font-size: 24px; color: #a0c8a5; font-weight: 700">%s</span>
                   </p>
                   <p>请输入此验证码完成操作，验证码15分钟内有效。</p>
                   <p style="font-size: 14px; color: #888888; margin-top: 20px">
