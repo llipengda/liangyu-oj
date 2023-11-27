@@ -25,6 +25,11 @@ public class AddProblemRequest {
     private Integer chapter;
 
     /**
+     * 提前写好的code
+     */
+    private String reservedCode;
+
+    /**
      * 输入描述
      */
     private String input;

@@ -50,6 +50,11 @@ public class Problem implements Serializable {
     private String description;
 
     /**
+     * 提前写好的code
+     */
+    private String reservedCode;
+
+    /**
      * 输入描述
      */
     private String input;
