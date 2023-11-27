@@ -1,7 +1,6 @@
 package com.zybzyb.liangyuoj.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zybzyb.liangyuoj.entity.Submission;
 import com.zybzyb.liangyuoj.mapper.SubmissionMapper;
@@ -16,8 +15,6 @@ import com.zybzyb.liangyuoj.service.UserService;
 import com.zybzyb.liangyuoj.util.ReflectUtil;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -53,9 +50,16 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public String uploadImage(MultipartFile file) throws Exception{
+    public String uploadImage(MultipartFile file) throws Exception {
         String original = file.getOriginalFilename();
-        String flag = UUID.randomUUID().toString();
+        if (original == null) {
+            original = "";
+        } else {
+            original = original.replaceAll("\\.", "")
+                .replaceAll("/", "");
+        }
+        String flag = UUID.randomUUID()
+            .toString();
         String rootFilePath = local + flag + "-" + original;
         Files.write(Path.of(rootFilePath), file.getBytes());
         return web + flag + "-" + original;
@@ -66,11 +70,10 @@ public class UserServiceImpl implements UserService {
         QueryWrapper<Submission> submissionQueryWrapper = new QueryWrapper<>();
         submissionQueryWrapper.eq("user_id", id);
         submissionQueryWrapper.orderByDesc("submit_time");
-        return submissionMapper.selectPage(new Page<>(1, 10), submissionQueryWrapper).getRecords();
+        return submissionMapper.selectPage(new Page<>(1, 10), submissionQueryWrapper)
+            .getRecords();
     }
 
 
-
 }
-
 

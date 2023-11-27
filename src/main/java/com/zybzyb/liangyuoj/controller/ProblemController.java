@@ -1,6 +1,5 @@
 package com.zybzyb.liangyuoj.controller;
 
-import com.zybzyb.liangyuoj.annotation.NoAuth;
 import com.zybzyb.liangyuoj.common.Page;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
