@@ -109,11 +109,11 @@ public class EvaluateUtil {
                     return new EvaluateResult(
                         EvaluateStatus.WA,
                         """
-                            预期错误：
-                            期望输出：
-                            %s
-                            实际输出：
-                            %s
+                            答案错误：
+                                预期输出：
+                                %s
+                                实际输出：
+                                %s
                             """.formatted(expectedOutput, output),
                         time / 1000.0
                     );
