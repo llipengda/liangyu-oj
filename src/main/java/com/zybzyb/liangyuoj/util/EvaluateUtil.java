@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class EvaluateUtil {
-
+    
     public static EvaluateResult execute(String sourceCode, String input, String expectedOutput) throws Exception {
         String workDir = "./tests/";
         if (!new File(workDir).exists()) {
