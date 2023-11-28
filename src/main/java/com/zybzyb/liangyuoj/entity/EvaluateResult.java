@@ -25,6 +25,11 @@ public class EvaluateResult {
      */
     private Double time;
 
+    /**
+     * 所用内存
+     */
+    private Long memory;
+
     public EvaluateResult() {
         this.status = EvaluateStatus.AC;
         this.message = "测试通过";

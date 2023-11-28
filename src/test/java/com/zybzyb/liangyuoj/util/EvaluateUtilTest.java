@@ -34,15 +34,23 @@ class EvaluateUtilTest {
     @Test
     void timeLimitExceeded() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { while (true); } }";
-        String expectedOutput = "Hello, World!\n";
+        String expectedOutput = "";
         var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
         assertEquals(EvaluateStatus.TLE, res.getStatus());
     }
 
     @Test
+    void memoryLimitExceeded() throws Exception {
+        String sourceCode = "public class Solution { public static void main(String[] args) { int[] a = new int[1024 * 1024 * 100]; } }";
+        String expectedOutput = "";
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        assertEquals(EvaluateStatus.MLE, res.getStatus());
+    }
+
+    @Test
     void runtimeError() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { int x = 5 / 0; } }";
-        String expectedOutput = "Hello, World!\n";
+        String expectedOutput = "";
         var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
         assertEquals(EvaluateStatus.RE, res.getStatus());
     }
