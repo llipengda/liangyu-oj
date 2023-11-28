@@ -124,6 +124,5 @@ public class ProblemDto {
         this.accepted = p.getAccepted();
         this.submitted = p.getSubmitted();
         this.difficulty = p.getDifficulty();
-
     }
 }
