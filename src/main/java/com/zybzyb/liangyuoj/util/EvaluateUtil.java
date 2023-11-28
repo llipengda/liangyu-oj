@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version 2023/11/23
  */
 @Slf4j
-public class EvaluateUtil {
+public class EvaluateUtil implements Callable<EvaluateResult> {
 
     public static EvaluateResult execute(String sourceCode, String input, String expectedOutput) throws Exception {
         String workDir = "./tests/";
@@ -164,5 +164,10 @@ public class EvaluateUtil {
                 log.info("Delete Runner.class :" + new File(runnerFileName.replace(".java", "") + ".class").delete());
             }
         }
+    }
+
+    @Override
+    public EvaluateResult call(){
+        return null;
     }
 }

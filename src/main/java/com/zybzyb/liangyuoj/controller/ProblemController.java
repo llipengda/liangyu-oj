@@ -33,6 +33,7 @@ public class ProblemController {
      * @return 添加结果 1成功 0失败
      * @throws Exception 异常
      */
+    @NoAuth
     @PostMapping("/add")
     public Result<Problem> addProblem(@RequestBody AddProblemRequest addProblemRequest) throws Exception {
         return Result.success(problemService.add(addProblemRequest));
@@ -44,6 +45,7 @@ public class ProblemController {
      * @param chapter 章节
      * @return 简要题目列表
      */
+    @NoAuth
     @GetMapping("/getBriefList")
     public Result<List<BriefProblem>> getBriefList(Integer chapter) {
         return Result.success(problemService.getBriefList(chapter));
@@ -56,7 +58,7 @@ public class ProblemController {
      * @return 题目信息
      */
     @GetMapping("/getDetail")
-    public Result<Problem> getDetail(Long id) {
+    public Result<ProblemDto> getDetail(Long id) {
         return Result.success(problemService.getDetail(id));
     }
 
@@ -67,6 +69,7 @@ public class ProblemController {
      * @return 更新结果
      * @throws Exception 异常
      */
+    @NoAuth
     @PutMapping("/update")
     public Result<Problem> updateProblem(@RequestBody UpdateProblemRequest updateProblemRequest) throws Exception {
         return Result.success(problemService.update(updateProblemRequest));
@@ -121,6 +124,11 @@ public class ProblemController {
         return Result.success(problemService.getChapterList());
     }
 
+    /**
+     * 获取提交信息
+     * @param id 提交 ID
+     * @return 提交信息
+     */
     @GetMapping("/getSubmissionById")
     public Result<Submission> getSubmissionById(Long id) {
         return Result.success(problemService.getSubmissionById(id));

@@ -32,7 +32,8 @@ public class EvaluateResult {
 
     public EvaluateResult() {
         this.status = EvaluateStatus.AC;
-        this.message = "测试通过";
+        this.message = "评测通过";
         this.time = 0.0;
+        this.memory = 0L;
     }
 }
