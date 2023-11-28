@@ -28,4 +28,6 @@ public interface ProblemService {
 
     Page<Submission> getSubmissionList(Long problemId, Integer page, Integer pageSize);
 
+    List<Integer> getChapterList();
+
 }

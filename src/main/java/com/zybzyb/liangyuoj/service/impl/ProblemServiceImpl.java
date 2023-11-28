@@ -120,4 +120,11 @@ public class ProblemServiceImpl implements ProblemService {
         wrapper.eq("problem_id", problemId);
         return new Page<>(new PageInfo<>(submissionMapper.selectList(wrapper)));
     }
+
+    @Override
+    public List<Integer> getChapterList() {
+        QueryWrapper<Problem> wrapper = new QueryWrapper<>();
+        wrapper.select("distinct chapter").orderBy(true, true, "chapter");
+        return problemMapper.selectObjs(wrapper);
+    }
 }

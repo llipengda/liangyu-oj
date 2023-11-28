@@ -23,13 +23,7 @@ public class EvaluateUtil {
 
     public static EvaluateResult execute(String sourceCode, String input, String expectedOutput) throws Exception {
         String workDir = "./tests/";
-        if (!new File(workDir).exists()) {
-            if (new File(workDir).mkdirs()) {
-                log.info("create work directory success");
-            } else {
-                log.error("create work directory failed");
-            }
-        }
+        assert new File(workDir).exists();
 
         String className = "Solution" + UUID.randomUUID()
             .toString()
@@ -99,7 +93,7 @@ public class EvaluateUtil {
             System.out.println(runBuilder.command());
             long start = System.currentTimeMillis();
             Process run = runBuilder.start();
-            
+
             // 输入
             OutputStream stdin = run.getOutputStream();
             stdin.write(input.getBytes());

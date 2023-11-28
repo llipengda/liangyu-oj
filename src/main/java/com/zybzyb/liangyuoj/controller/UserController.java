@@ -2,6 +2,7 @@ package com.zybzyb.liangyuoj.controller;
 
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.controller.request.UpdateUserRequest;
+import com.zybzyb.liangyuoj.entity.Submission;
 import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.service.UserService;
 import com.zybzyb.liangyuoj.util.JWTUtil;
@@ -10,6 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -41,9 +45,34 @@ public class UserController {
      * @throws Exception 异常
      */
     @PutMapping(value = "/update", produces = "application/json")
-    public Result<User> update(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest request)
-        throws Exception {
+    public Result<User> update(@RequestBody UpdateUserRequest updateUserRequest, HttpServletRequest request) throws Exception {
         Long userId = JWTUtil.getUserIdFromRequest(request);
         return Result.success(userService.updateUser(updateUserRequest, userId));
     }
+
+    /**
+     * 上传图片
+     * @param file 文件
+     * @return 图片地址
+     * @throws Exception 异常
+     */
+    @PostMapping("/image")
+    public Result<String> uploadImage(@RequestBody MultipartFile file) throws Exception {
+        return Result.success(userService.uploadImage(file));
+    }
+
+    /**
+     * 获取最近提交
+     * @return 最近提交
+     */
+    @GetMapping("/getRecentSubmission")
+    public Result<List<Submission>> getRecentSubmission(HttpServletRequest request) {
+        Long userId = JWTUtil.getUserIdFromRequest(request);
+        return Result.success(userService.getRecentSubmission(userId));
+    }
+
 }
+
+
+
+
