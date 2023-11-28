@@ -3,6 +3,7 @@ package com.zybzyb.liangyuoj.service.impl;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,6 +90,7 @@ public class ProblemServiceImpl implements ProblemService {
             .userId(user.getId())
             .code(tryProblemRequest.getCode())
             .submitTime(new Date())
+            .problemName(p.getTitle())
             .build();
 
         EvaluateResult res = EvaluateUtil.execute(tryProblemRequest.getCode(),p.getSampleInput(),p.getSampleOutput());
@@ -97,6 +99,9 @@ public class ProblemServiceImpl implements ProblemService {
             .toString());
         if (res.getTime() != null) {
             submission.setTime(res.getTime());
+        }
+        if(res.getMemory() != null){
+            submission.setMemory(res.getMemory());
         }
         submissionMapper.insert(submission);
 
@@ -109,6 +114,7 @@ public class ProblemServiceImpl implements ProblemService {
         }
 
         problemMapper.updateById(p);
+        userMapper.updateById(user);
 
         return res;
     }
@@ -122,9 +128,16 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public List<Integer> getChapterList() {
+    public List<Map<String,Object>> getChapterList() {
         QueryWrapper<Problem> wrapper = new QueryWrapper<>();
-        wrapper.select("distinct chapter").orderBy(true, true, "chapter");
-        return problemMapper.selectObjs(wrapper);
+        wrapper.select("DISTINCT chapter","chapter_name");
+        wrapper.orderBy(true,true,"chapter");
+        problemMapper.selectMaps(wrapper);
+        return problemMapper.selectMaps(wrapper);
+    }
+
+    @Override
+    public Submission getSubmissionById(Long id) {
+        return submissionMapper.selectById(id);
     }
 }

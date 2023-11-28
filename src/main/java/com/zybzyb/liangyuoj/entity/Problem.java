@@ -45,6 +45,11 @@ public class Problem implements Serializable {
     private Integer chapter;
 
     /**
+     * 章节名
+     */
+    private String chapterName;
+
+    /**
      * 题目描述
      */
     private String description;

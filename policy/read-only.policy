@@ -1,4 +1,4 @@
 grant {
-    permission java.io.FilePermission "D:\code\Java\liangyu-oj\.\tests", "read";
-    permission java.io.FilePermission "D:\code\Java\liangyu-oj\.\tests", "write";
+    permission java.io.FilePermission "D:\Data\Repository\LiangYuOj\.\tests", "read";
+    permission java.io.FilePermission "D:\Data\Repository\LiangYuOj\.\tests", "write";
 };

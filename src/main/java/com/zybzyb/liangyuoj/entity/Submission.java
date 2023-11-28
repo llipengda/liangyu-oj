@@ -29,6 +29,11 @@ public class Submission {
     private Long problemId;
 
     /**
+     * 题目名字
+     */
+    private String problemName;
+
+    /**
      * 用户 ID
      */
     private Long userId;
@@ -53,4 +58,8 @@ public class Submission {
      */
     private Double time;
 
+    /**
+     * 内存
+     */
+    private Long memory;
 }
