@@ -117,6 +117,7 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
                     return new EvaluateResult(EvaluateStatus.MLE, "Memory Limit Exceeded.", time / 1000.0, memory);
                 }
                 output = output.replaceAll(className + "-memory:.+M$", "");
+                output = output.replaceAll("\\s*\\n\\s*", "\n");
                 // 判断输出正误
                 if (output.trim()
                     .equals(expectedOutput.trim())) {
@@ -174,4 +175,11 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
     public EvaluateResult call(){
         return null;
     }
+
+    public static void main(String[] args) {
+        String str = "Hello, World!  \n   This is a test\n message.";
+        str = str.replaceAll("\\s*\\n\\s*", "\n");
+        System.out.println(str);
+    }
+
 }
