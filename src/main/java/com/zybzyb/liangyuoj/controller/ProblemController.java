@@ -1,5 +1,6 @@
 package com.zybzyb.liangyuoj.controller;
 
+import com.zybzyb.liangyuoj.annotation.NoAuth;
 import com.zybzyb.liangyuoj.common.Page;
 import com.zybzyb.liangyuoj.common.Result;
 import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
@@ -114,11 +115,15 @@ public class ProblemController {
      * 获取章节列表
      * @return 章节列表
      */
+    @NoAuth
     @GetMapping("/getChapterList")
-    public Result<List<Integer>> getChapterList() {
+    public Result<List<Map<String,Object>>> getChapterList() {
         return Result.success(problemService.getChapterList());
     }
 
-
+    @GetMapping("/getSubmissionById")
+    public Result<Submission> getSubmissionById(Long id) {
+        return Result.success(problemService.getSubmissionById(id));
+    }
 
 }

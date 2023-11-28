@@ -1,6 +1,7 @@
 package com.zybzyb.liangyuoj.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.zybzyb.liangyuoj.common.Page;
 import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
@@ -28,6 +29,8 @@ public interface ProblemService {
 
     Page<Submission> getSubmissionList(Long problemId, Integer page, Integer pageSize);
 
-    List<Integer> getChapterList();
+    List<Map<String,Object>> getChapterList();
+
+    Submission getSubmissionById(Long id);
 
 }
