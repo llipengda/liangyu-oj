@@ -118,6 +118,7 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
                 }
                 output = output.replaceAll(className + "-memory:.+M$", "");
                 output = output.replaceAll("\\s*\\n\\s*", "\n");
+                expectedOutput = expectedOutput.replaceAll("\\s*\\n\\s*", "\n");
                 // 判断输出正误
                 if (output.trim()
                     .equals(expectedOutput.trim())) {
