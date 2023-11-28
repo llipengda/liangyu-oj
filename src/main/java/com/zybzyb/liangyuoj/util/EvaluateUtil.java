@@ -126,9 +126,7 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
                     run.destroy();
                     return new EvaluateResult(EvaluateStatus.AC, """
                             评测通过
-                                输出：
-                                %s
-                            """.formatted(output), time / 1000.0, memory);
+                            """, time / 1000.0, memory);
                 } else {
                     log.info("Wrong Answer.");
                     log.info("Expected Output: \n" + expectedOutput);
@@ -137,10 +135,10 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
                         EvaluateStatus.WA,
                         """
                             答案错误：
-                                预期输出：
-                                %s
-                                实际输出：
-                                %s
+                            预期输出：
+                            %s
+                            实际输出：
+                            %s
                             """.formatted(expectedOutput, output),
                         time / 1000.0,
                         memory

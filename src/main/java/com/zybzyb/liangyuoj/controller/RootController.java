@@ -21,4 +21,21 @@ public class RootController {
     public void root(HttpServletResponse response) throws IOException {
         response.sendRedirect("/swagger-ui/index.html");
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

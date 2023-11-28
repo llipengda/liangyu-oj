@@ -46,5 +46,6 @@ public class StartInit {
             };
             """.formatted(testDir.getAbsolutePath(), testDir.getAbsolutePath());
         Files.write(Path.of(READ_ONLY_PILICY), readOnly.getBytes());
+
     }
 }
