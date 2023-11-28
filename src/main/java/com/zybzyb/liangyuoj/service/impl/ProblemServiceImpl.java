@@ -1,10 +1,15 @@
 package com.zybzyb.liangyuoj.service.impl;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
+import com.zybzyb.liangyuoj.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +21,6 @@ import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
 import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.TryProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.UpdateProblemRequest;
-import com.zybzyb.liangyuoj.entity.BriefProblem;
-import com.zybzyb.liangyuoj.entity.EvaluateResult;
-import com.zybzyb.liangyuoj.entity.Problem;
-import com.zybzyb.liangyuoj.entity.Submission;
-import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.ProblemMapper;
 import com.zybzyb.liangyuoj.mapper.SubmissionMapper;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
@@ -46,6 +46,10 @@ public class ProblemServiceImpl implements ProblemService {
             .submitted(0)
             .accepted(0)
             .build();
+        problem.setSampleInput(addProblemRequest.getAllInput().get(0));
+        problem.setSampleOutput(addProblemRequest.getAllOutput().get(0));
+        problem.setAllInput(JSONObject.toJSONString(addProblemRequest.getAllInput()));
+        problem.setAllOutput(JSONObject.toJSONString(addProblemRequest.getAllOutput()));
         ReflectUtil.add(problem, addProblemRequest);
         problemMapper.insert(problem);
         return problem;
@@ -59,14 +63,20 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public Problem getDetail(Long id) {
-        return problemMapper.selectOne(new QueryWrapper<Problem>().eq("id", id));
+    public ProblemDto getDetail(Long id) {
+        return new ProblemDto(problemMapper.selectOne(new QueryWrapper<Problem>().eq("id", id)));
     }
 
     @Override
     public Problem update(UpdateProblemRequest updateProblemRequest) throws Exception {
         Problem problem = problemMapper.selectOne(new QueryWrapper<Problem>().eq("id", updateProblemRequest
             .getId()));
+        if(updateProblemRequest.getAllInput().containsAll(JSON.parseObject(problem.getAllInput(),new TypeReference<List<String>>(){}))){
+            problem.setAllInput(JSONObject.toJSONString(updateProblemRequest.getAllInput()));
+        }
+        if(updateProblemRequest.getAllOutput().containsAll(JSON.parseObject(problem.getAllOutput(),new TypeReference<List<String>>(){}))){
+            problem.setAllOutput(JSONObject.toJSONString(updateProblemRequest.getAllOutput()));
+        }
         ReflectUtil.update(problem, updateProblemRequest);
         problemMapper.updateById(problem);
         return problem;
@@ -82,7 +92,6 @@ public class ProblemServiceImpl implements ProblemService {
     @Override
     public EvaluateResult evaluate(TryProblemRequest tryProblemRequest, Long userId) throws Exception {
         Problem p = problemMapper.selectOne(new QueryWrapper<Problem>().eq("id", tryProblemRequest.getProblemId()));
-
         User user = userMapper.selectById(userId);
 
         Submission submission = Submission.builder()
@@ -93,15 +102,42 @@ public class ProblemServiceImpl implements ProblemService {
             .problemName(p.getTitle())
             .build();
 
-        EvaluateResult res = EvaluateUtil.execute(tryProblemRequest.getCode(),p.getSampleInput(),p.getSampleOutput());
-
-        submission.setResult(res.getStatus()
-            .toString());
-        if (res.getTime() != null) {
-            submission.setTime(res.getTime());
+        ExecutorService service = Executors.newFixedThreadPool(10);
+        List<String> inputs = JSON.parseObject(p.getAllInput(), new TypeReference<>() {});
+        List<String> outputs = JSON.parseObject(p.getAllOutput(), new TypeReference<>() {});
+        List<Callable<EvaluateResult>> tasks = new ArrayList<>();
+        EvaluateResult res = new EvaluateResult();
+        for(int x = 0 ; x < inputs.size() && x < outputs.size() ; ++x){
+            int finalX = x;
+            tasks.add(() -> EvaluateUtil.execute(tryProblemRequest.getCode(),inputs.get(finalX),outputs.get(finalX)));
         }
-        if(res.getMemory() != null){
-            submission.setMemory(res.getMemory());
+        try{
+            List<Future<EvaluateResult>> futures = service.invokeAll(tasks);
+            for(Future<EvaluateResult> future : futures){
+                EvaluateResult result = future.get();
+                if(result.getStatus() != EvaluateStatus.AC){
+                    res.setStatus(result.getStatus());
+                    res.setMessage(result.getMessage());
+                }
+                if(result.getTime() != null){
+                    res.setTime(res.getTime() + result.getTime());
+                }
+                if(result.getMemory() != null){
+                    res.setMemory(res.getMemory() + result.getMemory());
+                }
+            }
+        }finally {
+            service.shutdown();
+        }
+
+        submission.setResult(res.getStatus().toString());
+        if(res.getTime() != null && res.getTime() != 0){
+            submission.setTime(res.getTime() / inputs.size());
+            res.setTime(submission.getTime());
+        }
+        if(res.getMemory() != null && res.getMemory() != 0){
+            submission.setMemory(res.getMemory() / inputs.size());
+            res.setMemory(submission.getMemory());
         }
         submissionMapper.insert(submission);
 

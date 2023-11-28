@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Schema(description = "添加题目请求")
@@ -40,14 +42,14 @@ public class AddProblemRequest {
     private String output;
 
     /**
-     * 样例输入
+     * 所有输入
      */
-    private String sampleInput;
+    private List<String> allInput;
 
     /**
-     * 样例输出
+     * 所有输出
      */
-    private String sampleOutput;
+    private List<String> allOutput;
 
     /**
      * 提示

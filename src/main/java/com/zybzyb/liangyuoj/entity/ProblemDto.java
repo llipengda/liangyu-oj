@@ -1,27 +1,23 @@
 package com.zybzyb.liangyuoj.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
+@Schema(description = "题目简要信息")
 @AllArgsConstructor
-@Builder
-@NoArgsConstructor
-@Schema(description = "题目")
-public class Problem implements Serializable {
+public class ProblemDto {
 
     /**
      * 题目 ID
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -82,12 +78,12 @@ public class Problem implements Serializable {
     /**
      * 所有输入
      */
-    private String allInput;
+    private List<String> allInput;
 
     /**
      * 所有输出
      */
-    private String allOutput;
+    private List<String> allOutput;
 
     /**
      * 提示
@@ -119,4 +115,27 @@ public class Problem implements Serializable {
      */
     private Integer difficulty;
 
+    public ProblemDto(Problem p){
+        this.id = p.getId();
+        this.createTime = p.getCreateTime();
+        this.deleteTime = p.getDeleteTime();
+        this.title = p.getTitle();
+        this.chapter = p.getChapter();
+        this.chapterName = p.getChapterName();
+        this.description = p.getDescription();
+        this.reservedCode = p.getReservedCode();
+        this.input = p.getInput();
+        this.output = p.getOutput();
+        this.sampleInput = p.getSampleInput();
+        this.sampleOutput = p.getSampleOutput();
+        this.hint = p.getHint();
+        this.timeLimit = p.getTimeLimit();
+        this.memoryLimit = p.getMemoryLimit();
+        this.accepted = p.getAccepted();
+        this.submitted = p.getSubmitted();
+        this.difficulty = p.getDifficulty();
+
+        this.allInput = JSON.parseObject(p.getAllInput(), new TypeReference<>() {});
+        this.allOutput = JSON.parseObject(p.getAllOutput(), new TypeReference<>() {});
+    }
 }

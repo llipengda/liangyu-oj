@@ -7,10 +7,7 @@ import com.zybzyb.liangyuoj.common.Page;
 import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.TryProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.UpdateProblemRequest;
-import com.zybzyb.liangyuoj.entity.BriefProblem;
-import com.zybzyb.liangyuoj.entity.EvaluateResult;
-import com.zybzyb.liangyuoj.entity.Problem;
-import com.zybzyb.liangyuoj.entity.Submission;
+import com.zybzyb.liangyuoj.entity.*;
 
 
 public interface ProblemService {
@@ -19,7 +16,7 @@ public interface ProblemService {
 
     List<BriefProblem> getBriefList(Integer chapter);
 
-    Problem getDetail(Long id);
+    ProblemDto getDetail(Long id);
 
     Problem update(UpdateProblemRequest updateProblemRequest) throws Exception;
 
