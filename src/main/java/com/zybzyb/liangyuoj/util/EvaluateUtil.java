@@ -117,12 +117,18 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
                     return new EvaluateResult(EvaluateStatus.MLE, "Memory Limit Exceeded.", time / 1000.0, memory);
                 }
                 output = output.replaceAll(className + "-memory:.+M$", "");
+                output = output.replaceAll("\\s*\\n\\s*", "\n");
+                expectedOutput = expectedOutput.replaceAll("\\s*\\n\\s*", "\n");
                 // 判断输出正误
                 if (output.trim()
                     .equals(expectedOutput.trim())) {
                     log.info("Correct Answer.");
                     run.destroy();
-                    return new EvaluateResult(EvaluateStatus.AC, "评测通过", time / 1000.0, memory);
+                    return new EvaluateResult(EvaluateStatus.AC, """
+                            评测通过
+                                输出：
+                                %s
+                            """.formatted(output), time / 1000.0, memory);
                 } else {
                     log.info("Wrong Answer.");
                     log.info("Expected Output: \n" + expectedOutput);
@@ -170,4 +176,11 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
     public EvaluateResult call(){
         return null;
     }
+
+    public static void main(String[] args) {
+        String str = "Hello, World!  \n   This is a test\n message.";
+        str = str.replaceAll("\\s*\\n\\s*", "\n");
+        System.out.println(str);
+    }
+
 }

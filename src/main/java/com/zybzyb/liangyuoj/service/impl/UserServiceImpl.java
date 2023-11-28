@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zybzyb.liangyuoj.entity.Submission;
 import com.zybzyb.liangyuoj.mapper.SubmissionMapper;
+import com.zybzyb.liangyuoj.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -84,10 +85,12 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new CommonException(CommonErrorCode.NOT_A_PICTURE);
         }
-        String flag = UUID.randomUUID()
-            .toString();
+        String flag = UUID.randomUUID().toString();
         String rootFilePath = local + flag + extension;
         Files.write(Path.of(rootFilePath), file.getBytes());
+        if(file.getBytes().length > 2 * 1024 * 1024){
+            ImageUtil.scale(rootFilePath,rootFilePath,2,false);
+        }
         return web + flag + extension;
     }
 
