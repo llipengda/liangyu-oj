@@ -39,6 +39,11 @@ public class Submission {
     private Long userId;
 
     /**
+     * 用户名
+     */
+    private String userName;
+
+    /**
      * 提交时间
      */
     private Date submitTime;
