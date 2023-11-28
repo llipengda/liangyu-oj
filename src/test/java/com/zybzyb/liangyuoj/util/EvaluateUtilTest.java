@@ -63,5 +63,24 @@ class EvaluateUtilTest {
         var res = EvaluateUtil.execute(sourceCode, input, expectedOutput);
         assertEquals(EvaluateStatus.AC, res.getStatus());
     }
+
+    @Test
+    void invalidOpeartionTest() throws Exception {
+        String sourceCode = """
+            import java.io.File;
+            import java.io.IOException;
+            import java.nio.file.Files;
+
+            public class Solution {
+                public static void main(String[] args) throws IOException {
+                    File file = new File("D:/test.txt");
+                    Files.write(file.toPath(), "Hello, World!".getBytes());
+                }
+            }
+            """;
+        String expectedOutput = "";
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        assertEquals(EvaluateStatus.RE, res.getStatus());
+    }
 }
 

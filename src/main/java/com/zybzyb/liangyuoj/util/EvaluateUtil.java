@@ -19,16 +19,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class EvaluateUtil {
-    
+
     public static EvaluateResult execute(String sourceCode, String input, String expectedOutput) throws Exception {
         String workDir = "./tests/";
-        if (!new File(workDir).exists()) {
-            if (new File(workDir).mkdirs()) {
-                log.info("create work directory success");
-            } else {
-                log.error("create work directory failed");
-            }
-        }
+        assert new File(workDir).exists();
 
         String className = "Solution" + UUID.randomUUID()
             .toString()
@@ -74,6 +68,8 @@ public class EvaluateUtil {
 
             // 运行.class文件
             ProcessBuilder runBuilder = new ProcessBuilder("java",
+                "-Djava.security.manager",
+                "-Djava.security.policy=../policy/read-only.policy",
                 "-cp",
                 workDir,
                 className
