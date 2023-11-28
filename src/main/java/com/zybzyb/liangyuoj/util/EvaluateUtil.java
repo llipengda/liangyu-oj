@@ -122,7 +122,11 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
                     .equals(expectedOutput.trim())) {
                     log.info("Correct Answer.");
                     run.destroy();
-                    return new EvaluateResult(EvaluateStatus.AC, "评测通过", time / 1000.0, memory);
+                    return new EvaluateResult(EvaluateStatus.AC, """
+                            评测通过
+                                输出：
+                                %s
+                            """.formatted(output), time / 1000.0, memory);
                 } else {
                     log.info("Wrong Answer.");
                     log.info("Expected Output: \n" + expectedOutput);
