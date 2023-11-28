@@ -76,16 +76,6 @@ public class ProblemDto {
     private String sampleOutput;
 
     /**
-     * 所有输入
-     */
-    private List<String> allInput;
-
-    /**
-     * 所有输出
-     */
-    private List<String> allOutput;
-
-    /**
      * 提示
      */
     private String hint;
@@ -135,7 +125,5 @@ public class ProblemDto {
         this.submitted = p.getSubmitted();
         this.difficulty = p.getDifficulty();
 
-        this.allInput = JSON.parseObject(p.getAllInput(), new TypeReference<>() {});
-        this.allOutput = JSON.parseObject(p.getAllOutput(), new TypeReference<>() {});
     }
 }
