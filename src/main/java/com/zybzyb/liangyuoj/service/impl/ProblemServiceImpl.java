@@ -97,6 +97,7 @@ public class ProblemServiceImpl implements ProblemService {
         Submission submission = Submission.builder()
             .problemId(p.getId())
             .userId(user.getId())
+            .userName(user.getNickname())
             .code(tryProblemRequest.getCode())
             .submitTime(new Date())
             .problemName(p.getTitle())
