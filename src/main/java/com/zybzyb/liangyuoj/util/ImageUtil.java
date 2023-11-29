@@ -1,14 +1,11 @@
 package com.zybzyb.liangyuoj.util;
 
-import lombok.extern.slf4j.Slf4j;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-@Slf4j
 public class ImageUtil {
 
     /**

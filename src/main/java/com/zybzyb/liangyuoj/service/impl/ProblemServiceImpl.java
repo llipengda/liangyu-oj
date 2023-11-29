@@ -1,30 +1,42 @@
 package com.zybzyb.liangyuoj.service.impl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.TypeReference;
-import com.zybzyb.liangyuoj.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zybzyb.liangyuoj.common.CommonErrorCode;
 import com.zybzyb.liangyuoj.common.Page;
 import com.zybzyb.liangyuoj.common.enumeration.EvaluateStatus;
+import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.TryProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.UpdateProblemRequest;
+import com.zybzyb.liangyuoj.entity.BriefProblem;
+import com.zybzyb.liangyuoj.entity.EvaluateResult;
+import com.zybzyb.liangyuoj.entity.Problem;
+import com.zybzyb.liangyuoj.entity.ProblemDto;
+import com.zybzyb.liangyuoj.entity.Submission;
+import com.zybzyb.liangyuoj.entity.User;
 import com.zybzyb.liangyuoj.mapper.ProblemMapper;
 import com.zybzyb.liangyuoj.mapper.SubmissionMapper;
 import com.zybzyb.liangyuoj.mapper.UserMapper;
 import com.zybzyb.liangyuoj.service.ProblemService;
+import com.zybzyb.liangyuoj.util.AssertUtil;
 import com.zybzyb.liangyuoj.util.EvaluateUtil;
 import com.zybzyb.liangyuoj.util.ReflectUtil;
 
@@ -63,8 +75,10 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public ProblemDto getDetail(Long id) {
-        return new ProblemDto(problemMapper.selectOne(new QueryWrapper<Problem>().eq("id", id)));
+    public ProblemDto getDetail(Long id) throws CommonException {
+        Problem p = problemMapper.selectOne(new QueryWrapper<Problem>().eq("id", id));
+        AssertUtil.notNull(p, CommonErrorCode.PROBLEM_NOT_FOUND);
+        return new ProblemDto(p);
     }
 
     @Override

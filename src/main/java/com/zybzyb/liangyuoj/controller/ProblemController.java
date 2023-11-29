@@ -3,6 +3,7 @@ package com.zybzyb.liangyuoj.controller;
 import com.zybzyb.liangyuoj.annotation.NoAuth;
 import com.zybzyb.liangyuoj.common.Page;
 import com.zybzyb.liangyuoj.common.Result;
+import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.TryProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.UpdateProblemRequest;
@@ -56,9 +57,10 @@ public class ProblemController {
      * 
      * @param id 题目 ID
      * @return 题目信息
+     * @throws CommonException 通用异常
      */
     @GetMapping("/getDetail")
-    public Result<ProblemDto> getDetail(Long id) {
+    public Result<ProblemDto> getDetail(Long id) throws CommonException {
         return Result.success(problemService.getDetail(id));
     }
 

@@ -22,7 +22,8 @@ public enum CommonErrorCode {
     SEND_EMAIL_FAILED(4008, "发送邮件失败"),
     VERIFICATION_CODE_HAS_EXPIRED(4009, "验证码已过期"),
     FILE_NAME_EMPTY(4010, "文件名为空"),
-    NOT_A_PICTURE(4011, "该文件不是图片");
+    NOT_A_PICTURE(4011, "该文件不是图片"),
+    PROBLEM_NOT_FOUND(4012, "问题不存在");
 
     /**
      * 错误码

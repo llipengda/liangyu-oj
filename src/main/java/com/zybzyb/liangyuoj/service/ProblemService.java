@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.zybzyb.liangyuoj.common.Page;
+import com.zybzyb.liangyuoj.common.exception.CommonException;
 import com.zybzyb.liangyuoj.controller.request.AddProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.TryProblemRequest;
 import com.zybzyb.liangyuoj.controller.request.UpdateProblemRequest;
@@ -16,7 +17,7 @@ public interface ProblemService {
 
     List<BriefProblem> getBriefList(Integer chapter);
 
-    ProblemDto getDetail(Long id);
+    ProblemDto getDetail(Long id) throws CommonException;
 
     Problem update(UpdateProblemRequest updateProblemRequest) throws Exception;
 
@@ -26,7 +27,7 @@ public interface ProblemService {
 
     Page<Submission> getSubmissionList(Long problemId, Integer page, Integer pageSize);
 
-    List<Map<String,Object>> getChapterList();
+    List<Map<String, Object>> getChapterList();
 
     Submission getSubmissionById(Long id);
 

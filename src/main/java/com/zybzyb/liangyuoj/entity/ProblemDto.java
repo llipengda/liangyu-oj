@@ -1,14 +1,10 @@
 package com.zybzyb.liangyuoj.entity;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.TypeReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Schema(description = "题目简要信息")
