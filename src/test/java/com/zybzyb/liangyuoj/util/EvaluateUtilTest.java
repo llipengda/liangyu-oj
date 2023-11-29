@@ -11,7 +11,7 @@ class EvaluateUtilTest {
     void correctOutput() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello, World!\"); } }";
         String expectedOutput = "Hello, World!\n";
-        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput,2,256);
         assertEquals(EvaluateStatus.AC, res.getStatus());
     }
 
@@ -19,7 +19,7 @@ class EvaluateUtilTest {
     void wrongOutput() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello\"); } }";
         String expectedOutput = "Hello, World!\n";
-        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput,2,256);
         assertEquals(EvaluateStatus.WA, res.getStatus());
     }
 
@@ -27,7 +27,7 @@ class EvaluateUtilTest {
     void compilationError() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { System.out.println(\"Hello, World!\") } }";
         String expectedOutput = "Hello, World!\n";
-        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput,2,256);
         assertEquals(EvaluateStatus.CE, res.getStatus());
     }
 
@@ -35,7 +35,7 @@ class EvaluateUtilTest {
     void timeLimitExceeded() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { while (true); } }";
         String expectedOutput = "";
-        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput,2,256);
         assertEquals(EvaluateStatus.TLE, res.getStatus());
     }
 
@@ -43,7 +43,7 @@ class EvaluateUtilTest {
     void memoryLimitExceeded() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { int[] a = new int[1024 * 1024 * 100]; } }";
         String expectedOutput = "";
-        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput,2,256);
         assertEquals(EvaluateStatus.MLE, res.getStatus());
     }
 
@@ -51,7 +51,7 @@ class EvaluateUtilTest {
     void runtimeError() throws Exception {
         String sourceCode = "public class Solution { public static void main(String[] args) { int x = 5 / 0; } }";
         String expectedOutput = "";
-        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput,2,256);
         assertEquals(EvaluateStatus.RE, res.getStatus());
     }
 
@@ -68,7 +68,7 @@ class EvaluateUtilTest {
             """;
         String input = "Hello, World!";
         String expectedOutput = "Hello, World!";
-        var res = EvaluateUtil.execute(sourceCode, input, expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, input, expectedOutput,2,256);
         assertEquals(EvaluateStatus.AC, res.getStatus());
     }
 
@@ -87,7 +87,7 @@ class EvaluateUtilTest {
             }
             """;
         String expectedOutput = "";
-        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput);
+        var res = EvaluateUtil.execute(sourceCode, "", expectedOutput,2,256);
         assertEquals(EvaluateStatus.RE, res.getStatus());
     }
 }

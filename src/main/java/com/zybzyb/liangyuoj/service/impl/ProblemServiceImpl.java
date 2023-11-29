@@ -124,7 +124,7 @@ public class ProblemServiceImpl implements ProblemService {
         EvaluateResult res = new EvaluateResult();
         for(int x = 0 ; x < inputs.size() && x < outputs.size() ; ++x){
             int finalX = x;
-            tasks.add(() -> EvaluateUtil.execute(tryProblemRequest.getCode(),inputs.get(finalX),outputs.get(finalX)));
+            tasks.add(() -> EvaluateUtil.execute(tryProblemRequest.getCode(),inputs.get(finalX),outputs.get(finalX),p.getTimeLimit(),p.getMemoryLimit()));
         }
         try{
             List<Future<EvaluateResult>> futures = service.invokeAll(tasks);
