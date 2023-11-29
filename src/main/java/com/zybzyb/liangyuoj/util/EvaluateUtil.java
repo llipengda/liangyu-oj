@@ -16,12 +16,12 @@ import lombok.extern.slf4j.Slf4j;
  * 评测工具类
  * 
  * @author xw, pdli, zyb
- * @version 2023/11/23
+ * @version 2023/10/23
  */
 @Slf4j
 public class EvaluateUtil implements Callable<EvaluateResult> {
 
-    public static EvaluateResult execute(String sourceCode, String input, String expectedOutput) throws Exception {
+    public static EvaluateResult execute(String sourceCode, String input, String expectedOutput,Integer timeLimit,Integer memoryLimit) throws Exception {
         String workDir = "./tests/";
         assert new File(workDir).exists();
 
@@ -101,7 +101,7 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
             stdin.close();
 
             // 设个计时器，如果超时了，就打印一个超时
-            boolean finished = run.waitFor(2, TimeUnit.SECONDS);
+            boolean finished = run.waitFor(timeLimit, TimeUnit.SECONDS);
 
             if (finished && run.exitValue() == 0) {
                 long time = System.currentTimeMillis() - start;
@@ -111,7 +111,7 @@ public class EvaluateUtil implements Callable<EvaluateResult> {
                 Pattern pattern = Pattern.compile(className + "-memory:(\\d+)M");
                 Matcher matcher = pattern.matcher(output);
                 Long memory = matcher.find() ? Long.parseLong(matcher.group(1)) : null;
-                if (memory != null && memory > 256) {
+                if (memory != null && memory > memoryLimit) {
                     log.info("Memory Limit Exceeded.");
                     run.destroy();
                     return new EvaluateResult(EvaluateStatus.MLE, "Memory Limit Exceeded.", time / 1000.0, memory);
